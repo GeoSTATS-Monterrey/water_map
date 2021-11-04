@@ -1,0 +1,182 @@
+body 
+{
+  background-color: #5FDA5D; 
+  font-family: arial;
+}
+
+.card
+{
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.radio-group .custom-control-input ~ .custom-control-label::before {
+  content: none;
+}
+
+.radio-group .custom-radio .custom-control-input ~ .custom-control-label::after {
+  content: none;
+}
+
+.radio-group .custom-control {
+  padding-left: 0;
+}
+
+.radio-group .btn-group > .custom-control:not(:last-child) > .btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.radio-group .btn-group > .custom-control:not(:first-child) > .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: -1px;
+}
+
+.btn-group .btn-secondary {
+  border-color: #F7F7F7;
+  background-color: #F7F7F7;
+  color: #535353;
+}
+
+
+/* Calendario /*
+
+/* Calendar date start and end */
+.CalendarDay__selected, .CalendarDay__selected:active, .CalendarDay__selected:hover {
+  background: rgb(17, 17, 17) !important; /* gris boton activado */
+  border: 1px double rgb(17, 17, 17) !important; /* gris boton activado */
+  color: rgb(255, 255, 255) !important; /* blanco */
+}
+
+/* Calendar in between start and end date */
+.CalendarDay__selected_span {
+    background: rgb(84, 91, 98) !important; /* gris boton activado */
+    border: 1px double rgb(84, 91, 98) !important; /* gris boton activado */
+    color: rgb(255, 255, 255) !important; /* blanco */
+}
+
+.CalendarDay__selected_span:active, .CalendarDay__selected_span:hover {
+    background: rgb(170, 170, 170) !important;
+    border: 1px double rgb(170, 170, 170) !important;
+    color: rgb(255, 255, 255) !important; /* blanco */
+}
+
+/* Shortcut */
+.DayPickerKeyboardShortcuts_show__bottomRight::before {
+    border-top: 26px solid transparent;
+    border-right: 33px solid #ffffff;
+    bottom: 0;
+    right: 0;
+}
+
+/* Delineado date */
+.DateInput_input__focused {
+    outline: 0;
+    background: #ffffff;
+    border: 0;
+    border-top: 0;
+    border-right: 0;
+    border-bottom: 2px solid #111111;
+    border-left: 0;
+}
+
+.nav-link {
+    display: block;
+    padding: .5rem 1rem;
+    color: #535353;
+}
+
+
+
+.rc-slider-track {
+  background-color: #545B62;
+}
+
+.rc-slider-dot-active {  
+  border-color: #545B62;
+  border: solid 2px #545B62;
+}
+
+.rc-slider-handle {
+  background-color: #545B62;
+  border-color: #545B62;
+}
+
+.rc-slider-handle:hover {
+  border-color: #545B62;
+}
+
+.rc-slider-handle-active:active {
+  border-color: #545B62;
+}
+
+
+.DateInput_input {
+  text-align: center !important;
+}
+
+#modal_filtros .modal-content {
+  background-color: transparent!important;
+  border: none;
+
+}
+
+.custom-input-check {
+    position: relative;
+    margin-top: 0rem;
+    margin-left: 0rem;
+}
+
+
+.custom-control
+{
+  display: inline-block !important;
+  z-index: 0 !important;
+}
+
+.custom-checkbox
+{
+  margin: 4px !important;
+  padding-top: 4px;
+}
+
+
+
+.custom-control-label::after {
+  content: none !important;
+}
+
+.tarjeta_map
+{
+  border:#000000 !important;
+  background-color: #343332;
+}
+
+.tarjeta_arriba_map
+{
+  border-radius: .25rem .25rem 0 0 !important;
+}
+
+
+/* Borde y color de cuadro calendario */
+.DateRangePickerInput__withBorder
+{
+  border:2px solid #000 !important;
+}
+
+
+/* Estilos de checklist blancos y negros */
+
+.btn-group .btn-secondary {
+  border-color: #ededed;
+  background-color: #ededed;
+  color: #535353;
+}
+
+.btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle {
+    color: black;
+    background-color: white;
+    border-color: black;
+    border-width: 2px;
+}
