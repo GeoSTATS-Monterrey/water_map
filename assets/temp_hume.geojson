@@ -1,0 +1,32 @@
+{
+"type": "FeatureCollection",
+"name": "temp_hume",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "Referencia fría 1.", "xcoord": -100.3379797, "ycoord": 25.6383294, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.3379797, 25.6383294, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Referencia caliente 5.", "xcoord": -100.4029314, "ycoord": 25.6760988, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.4029314, 25.6760988, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Referencia caliente 5.", "xcoord": -100.4029314, "ycoord": 25.6760988, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.4029314, 25.6760988, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Referencia caliente 6.", "xcoord": -100.4188291, "ycoord": 25.7697785, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.4188291, 25.7697785, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Metalsa", "xcoord": -100.200441, "ycoord": 25.7493724, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.200441, 25.7493724, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "estadio BBVA", "xcoord": -100.2440758, "ycoord": 25.6720905, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.2440758, 25.6720905, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Calle Carr. A Reynosa 8789, Sin Nombre de Col 9, 67204 Guadalupe, N.L., México", "xcoord": -100.1745148, "ycoord": 25.6671117, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.1745148, 25.6671117, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Referencia Caliente 1.", "xcoord": -100.3072458, "ycoord": 25.7230387, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.3072458, 25.7230387, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Museo de Cera Monterrey, Centro, 64000 Monterrey, N.L., México", "xcoord": -100.2836966, "ycoord": 25.6767137, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.2836966, 25.6767137, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Tecnológico", "xcoord": -100.292033, "ycoord": 25.6511309, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.292033, 25.6511309, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Ternium", "xcoord": -100.3072417, "ycoord": 25.7230383, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.3072417, 25.7230383, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Club campestre", "xcoord": -100.3378535, "ycoord": 25.6382017, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.3378535, 25.6382017, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "fundidora", "xcoord": -100.284139, "ycoord": 25.6778154, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.284139, 25.6778154, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "cementos", "xcoord": -100.3002416, "ycoord": 25.6989207, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.3002416, 25.6989207, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Sendero", "xcoord": -100.2926392, "ycoord": 25.7684189, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.2926392, 25.7684189, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Metalsa", "xcoord": -100.2004325, "ycoord": 25.7493686, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.2004325, 25.7493686, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "estadio BBVA", "xcoord": -100.2441012, "ycoord": 25.6721177, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.2441012, 25.6721177, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Daltile", "xcoord": -100.402889, "ycoord": 25.6761039, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.402889, 25.6761039, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "La alianza", "xcoord": -100.4188272, "ycoord": 25.7697815, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.4188272, 25.7697815, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Plaza Cumbres", "xcoord": -100.3967684, "ycoord": 25.7306755, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.3967684, 25.7306755, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "La Fe", "xcoord": -100.2144765, "ycoord": 25.7235321, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.2144765, 25.7235321, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Tecnológico", "xcoord": -100.2920147, "ycoord": 25.6511825, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.2920147, 25.6511825, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Guadalupe", "xcoord": -100.1733954, "ycoord": 25.6669384, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.1733954, 25.6669384, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Referencia caliente 3.", "xcoord": -100.2927354, "ycoord": 25.7684683, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.2927354, 25.7684683, 0.0 ] } },
+{ "type": "Feature", "properties": { "Name": "Referencia Caliente 1.", "xcoord": -100.3072458, "ycoord": 25.7230387, "zcoord": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -100.3072458, 25.7230387, 0.0 ] } }
+]
+}

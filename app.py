@@ -24,6 +24,8 @@ server = app.server
 
 # DATOS
 df = pd.read_csv("assets/vh_nl.csv", encoding='ISO-8859-1')
+emp = pd.read_csv("assets/empresas.csv", encoding='ISO-8859-1')
+pts = pd.read_csv("assets/temp_hume.csv", encoding='ISO-8859-1')
 
 # IMAGENES
 img1 = 'assets/info.png' # replace with your own image
@@ -46,22 +48,138 @@ mapa = go.Figure(
     px.scatter_mapbox(mapa_data, lat="Lat", lon="Lon",
     size = 'hechos_viales',
     size_max=1, 
-    zoom=12.5,
+    zoom=10,
     hover_data={'Lat':False, 'Lon':False, 'hechos_viales':False},
     opacity=0.9))
 
 mapa.update_layout(clickmode='event+select', 
      mapbox=dict(
         accesstoken=mapbox_access_token,
-        center=dict(lat=25.6572, lon=-100.3689),
+        center=dict(lat=25.693819980896006, lon=-100.31240109902377),
         style="dark"
     ),
-margin = dict(t=0, l=0, r=0, b=0)
-)
-mapa.update_traces(marker_color="#2cdb63",
+	margin = dict(t=0, l=0, r=0, b=0))
+
+# empresas = px.scatter_mapbox(emp,
+#     lat = emp.latitud,
+#     lon = emp.longitud,)
+
+# mapa.update_traces(hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
+#     showlegend = True,
+#     name = 'Cámara Vial Inteligente')
+
+# Juntamos Capas
+# mapa.add_trace(empresas.data[0])
+mapa.update_traces(marker_color="red",
+    unselected_marker_opacity=1)
+
+puntos = px.scatter_mapbox(pts,
+    lat = pts.ycoord,
+    lon = pts.xcoord,)
+
+# mapa.update_traces(hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
+#     showlegend = True,
+#     name = 'Cámara Vial Inteligente')
+
+# Juntamos Capas
+mapa.add_trace(puntos.data[0])
+mapa.update_traces(marker_color="green",
     unselected_marker_opacity=1)
 
 app.layout = html.Div([
+
+	# FILTROS
+	dbc.Button(
+		"Filtros", 
+		id="open-offcanvas", 
+		n_clicks=0,
+		style={'position':'absolute'}),
+    dbc.Offcanvas([
+
+    	dbc.Row([
+
+			dbc.Col([
+
+				daq.BooleanSwitch(
+	                id = '',
+	                on=False,
+	                color="#2A4A71",
+	                style={'float':'left'}, 
+	                className='px-4'
+	            ),		
+
+				html.H5('Temperatura'),
+
+				daq.BooleanSwitch(
+	                id = '',
+	                on=False,
+	                color="#2A4A71",
+	                style={'float':'left'}, 
+	                className='px-4'
+	            ),
+
+				html.H5('Humedad'),
+
+				daq.BooleanSwitch(
+	                id = '',
+	                on=False,
+	                color="#2A4A71",
+	                style={'float':'left'}, 
+	                className='px-4'
+	            ),
+
+	            html.H5('Vegetación'),
+
+				daq.BooleanSwitch(
+	                id = '',
+	                on=False,
+	                color="#2A4A71",
+	                style={'float':'left'}, 
+	                className='px-4'
+	            ),
+
+				html.H5('Particulas PM#'),
+
+				daq.BooleanSwitch(
+	                id = '',
+	                on=False,
+	                color="#2A4A71",
+	                style={'float':'left'}, 
+	                className='px-4'
+	            ),
+
+	            html.H5('Empresas contaminantes'),
+
+				daq.BooleanSwitch(
+	                id = '',
+	                on=False,
+	                color="#2A4A71",
+	                style={'float':'left'}, 
+	                className='px-4'
+	            ),
+
+	            html.H5('Automóviles'),
+
+				daq.BooleanSwitch(
+	                id = '',
+	                on=False,
+	                color="#2A4A71",
+	                style={'float':'left'}, 
+	                className='px-4'
+	            ),
+
+	            html.H5('Población'),
+
+			])
+
+    	])
+
+    	],
+        id="offcanvas",
+        title="Filtros",
+        is_open=False,
+        placement='end'
+    ),
 
 	# TITULO
 	dbc.Row([
@@ -69,8 +187,16 @@ app.layout = html.Div([
 		dbc.Col([
 		
 			html.H1('GeoSTATS'),
+		
+		], className='d-flex justify-content-center')
 
-			html.Br(),
+	], className='m-0', style={'height':'10vh'}),
+
+	# MAPA Y FILTROS
+	dbc.Row([
+
+		# MAPA
+		dbc.Col([
 
 			html.Div([
 
@@ -86,17 +212,26 @@ app.layout = html.Div([
 	                        'select2d',],
 	                        'displaylogo': False
 	                    },
-	                style={'height':'70vh'}
+	                style={'height':'85vh'}
 				)
 
-			])
-		
-		], className='d-flex justify-content-center')
+			]),
 
-	], className='m-0'),
+		]),
 
-], className='m-0')
+	], className='m-0', style={'height':'90vh'})
+
+], className='m-0', style={'height':'100vh'})
+
+@app.callback(
+    Output("offcanvas", "is_open"),
+    Input("open-offcanvas", "n_clicks"),
+    [State("offcanvas", "is_open")],
+)
+def toggle_offcanvas(n1, is_open):
+    if n1:
+        return not is_open
+    return is_open
 
 if __name__ == '__main__':
     app.run_server(debug=True)
-
