@@ -1,2 +1,2 @@
-# vehiculos_nl
-Inventario de vehículos en Nuevo León
+# GeoSTATS
+Mapa de temperatura, humedad, y otras capas.
