@@ -13,6 +13,7 @@ import plotly.express as px
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State
 #import dash_auth
+import geopandas as gpd
 
 
 app = dash.Dash(__name__, title='GeoSTATS',
@@ -85,17 +86,7 @@ app.layout = html.Div([
 	                className='px-4'
 	            ),		
 
-				html.H5('Temperatura'),
-
-				daq.BooleanSwitch(
-	                id = '',
-	                on=False,
-	                color="#2A4A71",
-	                style={'float':'left'}, 
-	                className='px-4'
-	            ),
-
-				html.H5('Humedad'),
+				html.H5('Temperatura y humedad'),
 
 				daq.BooleanSwitch(
 	                id = '',
