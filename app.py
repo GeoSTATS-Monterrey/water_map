@@ -36,55 +36,26 @@ mapbox_access_token = 'pk.eyJ1IjoiZWRnYXJndHpnenoiLCJhIjoiY2s4aHRoZTBjMDE4azNoan
 px.set_mapbox_access_token(mapbox_access_token)
 
 #-- Graph
-mapa_data = {
-           "Lat": pd.Series(25.6572),
-           "Lon": pd.Series(-100.3689),
-            "hechos_viales" : pd.Series(0),
-           }
-mapa_data = pd.DataFrame(mapa_data)
+trace_list2 = [
+    go.Scattermapbox(hoverinfo="skip", mode = "markers", lat=emp.latitud, lon=emp.longitud, opacity=0.7), #, line = {'color': '#a60000','width':4}
+    go.Scattermapbox(hoverinfo="skip", mode = "markers", lat=pts.ycoord, lon=pts.xcoord, opacity=0.7, marker = {'color': 'green','size':20}), #
+    # go.Scattermapbox(hoverinfo="skip", mode = "lines", lon = lons_p3, lat = lats_p3, line = {'color': '#ed3232','width':4}, opacity=0.7,),
+    # go.Scattermapbox(hoverinfo="skip", mode = "lines", lon = lons_p4, lat = lats_p4, line = {'color': '#ed5732','width':4}, opacity=0.7,),
+    # go.Scattermapbox(hoverinfo="skip", mode = "lines", lon = lons_p5, lat = lats_p5, line = {'color': '#ed7a32','width':4, }, opacity=0.7),
+]
 
-#-- Graph
-mapa = go.Figure(
-    px.scatter_mapbox(mapa_data, lat="Lat", lon="Lon",
-    size = 'hechos_viales',
-    size_max=1, 
-    zoom=10,
-    hover_data={'Lat':False, 'Lon':False, 'hechos_viales':False},
-    opacity=0.9))
-
+mapa = go.Figure(data=trace_list2)
 mapa.update_layout(clickmode='event+select', 
      mapbox=dict(
         accesstoken=mapbox_access_token,
-        center=dict(lat=25.693819980896006, lon=-100.31240109902377),
-        style="dark"
+        center=dict(lat=25.754798621861305, lon=-100.29721126556669),
+        style="streets",
+        zoom=10,
     ),
-	margin = dict(t=0, l=0, r=0, b=0))
+    showlegend=False,
+    margin = dict(t=0, l=0, r=0, b=0),
+)
 
-# empresas = px.scatter_mapbox(emp,
-#     lat = emp.latitud,
-#     lon = emp.longitud,)
-
-# mapa.update_traces(hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
-#     showlegend = True,
-#     name = 'Cámara Vial Inteligente')
-
-# Juntamos Capas
-# mapa.add_trace(empresas.data[0])
-mapa.update_traces(marker_color="red",
-    unselected_marker_opacity=1)
-
-puntos = px.scatter_mapbox(pts,
-    lat = pts.ycoord,
-    lon = pts.xcoord,)
-
-# mapa.update_traces(hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
-#     showlegend = True,
-#     name = 'Cámara Vial Inteligente')
-
-# Juntamos Capas
-mapa.add_trace(puntos.data[0])
-mapa.update_traces(marker_color="green",
-    unselected_marker_opacity=1)
 
 app.layout = html.Div([
 
@@ -93,7 +64,7 @@ app.layout = html.Div([
 		"Filtros", 
 		id="open-offcanvas", 
 		n_clicks=0,
-		style={'position':'absolute'}),
+		style={'position':'absolute','z-index':'1','right':'1%'}),
     dbc.Offcanvas([
 
     	dbc.Row([
@@ -150,6 +121,16 @@ app.layout = html.Div([
 
 	            html.H5('Empresas contaminantes'),
 
+	            daq.BooleanSwitch(
+	                id = '',
+	                on=False,
+	                color="#2A4A71",
+	                style={'float':'left'}, 
+	                className='px-4'
+	            ),
+
+	            html.H5('Escuelas'),
+
 				daq.BooleanSwitch(
 	                id = '',
 	                on=False,
@@ -186,11 +167,11 @@ app.layout = html.Div([
 
 		dbc.Col([
 		
-			html.H1('GeoSTATS'),
+			html.H1('GeoSTATS', style={'text-align':'center','color':'white'}),
 		
 		], className='d-flex justify-content-center')
 
-	], className='m-0', style={'height':'10vh'}),
+	], className='m-0', style={'height':'10vh', 'position':'absolute','z-index':'1','left':'40%'}),
 
 	# MAPA Y FILTROS
 	dbc.Row([
@@ -212,14 +193,14 @@ app.layout = html.Div([
 	                        'select2d',],
 	                        'displaylogo': False
 	                    },
-	                style={'height':'85vh'}
+	                style={'height':'100vh'}
 				)
 
 			]),
 
-		]),
+		], style={'padding':'0'}),
 
-	], className='m-0', style={'height':'90vh'})
+	], className='m-0', style={'height':'100vh','z-index':'2'})
 
 ], className='m-0', style={'height':'100vh'})
 
