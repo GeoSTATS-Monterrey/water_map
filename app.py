@@ -13,7 +13,7 @@ import plotly.express as px
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State
 #import dash_auth
-import geopandas as gpd
+# import geopandas as gpd
 
 
 app = dash.Dash(__name__, title='GeoSTATS',
@@ -24,6 +24,7 @@ app = dash.Dash(__name__, title='GeoSTATS',
 server = app.server
 
 # DATOS
+est = pd.read_csv("assets/purple_air/estaciones.csv", encoding='ISO-8859-1')
 df = pd.read_csv("assets/vh_nl.csv", encoding='ISO-8859-1')
 emp = pd.read_csv("assets/empresas.csv", encoding='ISO-8859-1')
 pts = pd.read_csv("assets/temp_hume.csv", encoding='ISO-8859-1')
@@ -42,9 +43,9 @@ px.set_mapbox_access_token(mapbox_access_token)
 
 #-- Graph
 trace_list2 = [
-    go.Scattermapbox(hoverinfo="skip", mode = "markers", lat=emp.latitud, lon=emp.longitud, opacity=0.7), #, line = {'color': '#a60000','width':4}
-    go.Scattermapbox(hoverinfo="skip", mode = "markers", lat=pts.ycoord, lon=pts.xcoord, opacity=0.7, marker = {'color': 'green','size':20}), #
-    # go.Scattermapbox(hoverinfo="skip", mode = "lines", lon = lons_p3, lat = lats_p3, line = {'color': '#ed3232','width':4}, opacity=0.7,),
+    go.Scattermapbox(hoverinfo="skip", mode = "markers", lat=emp.latitud, lon=emp.longitud, opacity=0.7, marker = {'color': 'red','size':10}), #, line = {'color': '#a60000','width':4}
+    go.Scattermapbox(hoverinfo="skip", mode = "markers", lat=pts.ycoord, lon=pts.xcoord, opacity=0.7, marker = {'color': 'green','size':15}), #
+    go.Scattermapbox(hoverinfo="skip", mode = "markers", lon = est.lon, lat = est.lat, opacity=0.7, marker = {'color': 'blue','size':20},),
     # go.Scattermapbox(hoverinfo="skip", mode = "lines", lon = lons_p4, lat = lats_p4, line = {'color': '#ed5732','width':4}, opacity=0.7,),
     # go.Scattermapbox(hoverinfo="skip", mode = "lines", lon = lons_p5, lat = lats_p5, line = {'color': '#ed7a32','width':4, }, opacity=0.7),
 ]
@@ -176,24 +177,30 @@ app.layout = html.Div([
 		# MAPA
 		dbc.Col([
 
-			html.Div([
+				html.Div([
 
-				dcc.Graph(
-	                id = 'mapa',
-	                figure = mapa,
-	                config={
-	                        'modeBarButtonsToRemove':
-	                        ['lasso2d', 'pan2d','zoom2d',
-	                        'zoomIn2d', 'zoomOut2d', 'autoScale2d',
-	                        'resetScale2d', 'hoverClosestCartesian',
-	                        'hoverCompareCartesian', 'toggleSpikelines',
-	                        'select2d',],
-	                        'displaylogo': False
-	                    },
-	                style={'height':'100vh'}
-				)
+					dcc.Loading([
 
-			]),
+						dcc.Graph(
+			                id = 'mapa',
+			                figure = mapa,
+			                config={
+			                        'modeBarButtonsToRemove':
+			                        ['lasso2d', 'pan2d','zoom2d',
+			                        'zoomIn2d', 'zoomOut2d', 'autoScale2d',
+			                        'resetScale2d', 'hoverClosestCartesian',
+			                        'hoverCompareCartesian', 'toggleSpikelines',
+			                        'select2d',],
+			                        'displaylogo': False
+			                    },
+			                style={'height':'100vh'}
+						)
+
+					],
+		            color="#2cdb63", type="cube"
+		            ),
+
+				]),
 
 		], style={'padding':'0'}),
 
