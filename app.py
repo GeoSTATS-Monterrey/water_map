@@ -12,7 +12,7 @@ import json as json
 import plotly.express as px
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State
-import dash_auth
+#import dash_auth
 
 
 app = dash.Dash(__name__, title='GeoSTATS',
