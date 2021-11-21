@@ -31,6 +31,10 @@ pts = pd.read_csv("assets/temp_hume.csv", encoding='ISO-8859-1')
 img1 = 'assets/info.png' # replace with your own image
 encoded_img1 = base64.b64encode(open(img1, 'rb').read()).decode('ascii')
 
+img2 = 'assets/layers.png' # replace with your own image
+encoded_img2 = base64.b64encode(open(img2, 'rb').read()).decode('ascii')
+
+
 # Mapbox Access Token
 mapbox_access_token = 'pk.eyJ1IjoiZWRnYXJndHpnenoiLCJhIjoiY2s4aHRoZTBjMDE4azNoanlxbmhqNjB3aiJ9.PI_g5CMTCSYw0UM016lKPw'
 px.set_mapbox_access_token(mapbox_access_token)
@@ -61,10 +65,12 @@ app.layout = html.Div([
 
 	# FILTROS
 	dbc.Button(
-		"Filtros", 
+		html.Img(src='data:image/png;base64,{}'.format(encoded_img2), 
+			style={'width':'100%',}
+		), 
 		id="open-offcanvas", 
 		n_clicks=0,
-		style={'position':'absolute','z-index':'1','right':'1%'}),
+		style={'position':'absolute','z-index':'1','right':'1%','top':'1%','width':'5%','background-color':'#9e9595','border':'none'}),
     dbc.Offcanvas([
 
     	dbc.Row([
