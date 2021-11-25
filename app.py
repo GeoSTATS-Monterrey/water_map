@@ -43,9 +43,10 @@ px.set_mapbox_access_token(mapbox_access_token)
 
 #-- Graph
 trace_list2 = [
-    go.Scattermapbox(hoverinfo="skip", mode = "markers", lat=emp.latitud, lon=emp.longitud, opacity=0.7, marker = {'color': 'red','size':10}), #, line = {'color': '#a60000','width':4}
-    go.Scattermapbox(hoverinfo="skip", mode = "markers", lat=pts.ycoord, lon=pts.xcoord, opacity=0.7, marker = {'color': 'green','size':15}), #
-    go.Scattermapbox(hoverinfo="skip", mode = "markers", lon = est.lon, lat = est.lat, opacity=0.7, marker = {'color': 'blue','size':20},),
+    go.Scattermapbox(mode = "markers", lat=emp.latitud, lon=emp.longitud, opacity=0.7, marker = {'color': 'red','size':10}, hoverlabel = dict(font_size = 20)), #, line = {'color': '#a60000','width':4}
+    go.Scattermapbox(mode = "markers", lat=pts.ycoord, lon=pts.xcoord, opacity=0.7, marker = {'color': 'green','size':15}), #
+    #go.Scattermapbox(mode = "markers", lon = est.lon, lat = est.lat, opacity=0.7, marker = {'color': 'blue','size':20},),
+    go.Densitymapbox(hoverinfo="skip", lat=est.lat, lon=est.lon, z=est.pm5, radius=40, showscale=False, colorscale='Turbo')
     # go.Scattermapbox(hoverinfo="skip", mode = "lines", lon = lons_p4, lat = lats_p4, line = {'color': '#ed5732','width':4}, opacity=0.7,),
     # go.Scattermapbox(hoverinfo="skip", mode = "lines", lon = lons_p5, lat = lats_p5, line = {'color': '#ed7a32','width':4, }, opacity=0.7),
 ]
@@ -54,9 +55,9 @@ mapa = go.Figure(data=trace_list2)
 mapa.update_layout(clickmode='event+select', 
      mapbox=dict(
         accesstoken=mapbox_access_token,
-        center=dict(lat=25.754798621861305, lon=-100.29721126556669),
-        style="streets",
-        zoom=10,
+        center=dict(lat=25.71804256894533, lon=-100.30914201555723),
+        style="dark",
+        zoom=10.5,
     ),
     showlegend=False,
     margin = dict(t=0, l=0, r=0, b=0),
