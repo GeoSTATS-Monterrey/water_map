@@ -321,19 +321,19 @@ app.layout = html.Div([
 		
 			html.H1('GeoSTATS', style={'text-align':'center','color':'white'}),
 
-			dbc.Button("info", id="open", n_clicks=0),
-	        dbc.Modal(
-	            [
-	                dbc.ModalBody("aaaaaaaaaaaaaaaaaa"),
-	                dbc.ModalFooter(
-	                    dbc.Button(
-	                        "Close", id="close", className="ms-auto", n_clicks=0
-	                    )
-	                ),
-	            ],
-	            id="modal",
-	            is_open=False,
-	        ),
+			# dbc.Button("info", id="open", n_clicks=0),
+	        # dbc.Modal(
+	        #     [
+	        #         dbc.ModalBody("aaaaaaaaaaaaaaaaaa"),
+	        #         dbc.ModalFooter(
+	        #             dbc.Button(
+	        #                 "Close", id="close", className="ms-auto", n_clicks=0
+	        #             )
+	        #         ),
+	        #     ],
+	        #     id="modal",
+	        #     is_open=False,
+	        # ),
 		
 		], className='d-flex justify-content-center')
 
@@ -386,15 +386,15 @@ def toggle_offcanvas(n1, is_open):
         return not is_open
     return is_open
 
-@app.callback(
-    Output("modal", "is_open"),
-    [Input("open", "n_clicks"), Input("close", "n_clicks")],
-    [State("modal", "is_open")],
-)
-def toggle_modal(n1, n2, is_open):
-    if n1 or n2:
-        return not is_open
-    return is_open
+# @app.callback(
+#     Output("modal", "is_open"),
+#     [Input("open", "n_clicks"), Input("close", "n_clicks")],
+#     [State("modal", "is_open")],
+# )
+# def toggle_modal(n1, n2, is_open):
+#     if n1 or n2:
+#         return not is_open
+#     return is_open
 
 if __name__ == '__main__':
     app.run_server(debug=True)
