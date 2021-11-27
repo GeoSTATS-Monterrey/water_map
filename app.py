@@ -127,8 +127,8 @@ smttr_map.update_traces(
 	hovertemplate = '%{customdata[0]}', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
     showlegend = True,
     name = 'SMTTR',
-    marker_color="red",
-    marker_size = 10)
+    marker_color=pts.temp,
+    marker_size = pts.temp*1.3)
 
 # CONAGUA Y NASA
 cyn_map = px.scatter_mapbox(cyn,
@@ -170,15 +170,30 @@ esc_sal_map.update_traces(
     marker_color="green",
     marker_size = 10)
 
+# SMTTR
+pm10_map = px.scatter_mapbox(est,
+    lat = est.lat,
+    lon = est.lon,
+    hover_name = est.id,
+    custom_data = ['estacion','pm10','pm2.5','pm1']
+    )
+pm10_map.update_traces(
+	hovertemplate = '%{customdata[0]}, %{customdata[1]}, %{customdata[2]}, %{customdata[3]}', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
+    showlegend = True,
+    name = 'PM10',
+    marker_color=est.pm1,
+    marker_size = est.pm1)
+
 # Juntamos Capas
 # mapa.add_trace(esc_sal_map.data[0])
 mapa.add_trace(smttr_map.data[0])
 mapa.add_trace(empre_map.data[0])
 mapa.add_trace(cyn_map.data[0])
+# mapa.add_trace(pm10_map.data[0])
 mapa.update_layout(
     mapbox = dict(
         accesstoken = mapbox_access_token,
-        style = 'dark'
+        style = 'streets'
     ),
     height = 800,
     hovermode = 'closest',
