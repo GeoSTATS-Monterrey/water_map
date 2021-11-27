@@ -72,27 +72,97 @@ mapbox_access_token = 'pk.eyJ1IjoiZWRnYXJndHpnenoiLCJhIjoiY2s4aHRoZTBjMDE4azNoan
 px.set_mapbox_access_token(mapbox_access_token)
 
 #-- Graph
-trace_list2 = [
-    go.Scattermapbox(mode = "markers", lat=emp.latitud, lon=emp.longitud, opacity=0.7, marker = {'color': 'red','size':10}, hoverlabel = dict(font_size = 20)), #, line = {'color': '#a60000','width':4}
-    go.Scattermapbox(mode = "markers", lat=pts.ycoord, lon=pts.xcoord, opacity=0.7, marker = {'color': 'green','size':15}), #
-    #go.Scattermapbox(mode = "markers", lon = est.lon, lat = est.lat, opacity=0.7, marker = {'color': 'blue','size':20},),
-    go.Densitymapbox(hoverinfo="skip", lat=est.lat, lon=est.lon, z=est.pm5, radius=40, showscale=False, colorscale='Turbo')
-    # go.Scattermapbox(hoverinfo="skip", mode = "lines", lon = lons_p4, lat = lats_p4, line = {'color': '#ed5732','width':4}, opacity=0.7,),
-    # go.Scattermapbox(hoverinfo="skip", mode = "lines", lon = lons_p5, lat = lats_p5, line = {'color': '#ed7a32','width':4, }, opacity=0.7),
-]
+# trace_list2 = [
+#     go.Scattermapbox(mode = "markers", lat=emp.latitud, lon=emp.longitud, opacity=0.7, marker = {'color': 'purple','size':10}, hoverlabel = dict(font_size = 20)), #, line = {'color': '#a60000','width':4}
+#     go.Scattermapbox(mode = "markers", lat=pts.ycoord, lon=pts.xcoord, opacity=0.7, marker = {'color': 'yellow','size':15}), #
+#     go.Scattermapbox(mode = "markers", lon = est.lon, lat = est.lat, marker = {'color': est.temp,'size':est.temp*1.5, 'colorscale':'Reds'}),
+#     # go.Densitymapbox(hoverinfo="skip", lat=est.lat, lon=est.lon, z=est.temp, radius=40, showscale=False, colorscale='Turbo')
+#     # go.Scattermapbox(hoverinfo="skip", mode = "lines", lon = lons_p4, lat = lats_p4, line = {'color': '#ed5732','width':4}, opacity=0.7,),
+#     # go.Scattermapbox(hoverinfo="skip", mode = "lines", lon = lons_p5, lat = lats_p5, line = {'color': '#ed7a32','width':4, }, opacity=0.7),
+# ]
 
-mapa = go.Figure(data=trace_list2)
-mapa.update_layout(clickmode='event+select', 
-     mapbox=dict(
-        accesstoken=mapbox_access_token,
-        center=dict(lat=25.71804256894533, lon=-100.30914201555723),
-        style="dark",
-        zoom=10.5,
+# mapa = go.Figure(data=trace_list2)
+# mapa.update_layout(clickmode='event+select', 
+#      mapbox=dict(
+#         accesstoken=mapbox_access_token,
+#         center=dict(lat=25.71804256894533, lon=-100.30914201555723),
+#         style="dark",
+#         zoom=10.5,
+#     ),
+#     showlegend=False,
+#     margin = dict(t=0, l=0, r=0, b=0),
+#     hoverlabel = dict(font_size = 20)
+# )
+
+
+
+
+mapa = go.Figure(px.scatter_mapbox(
+    lat = est.lat,
+    lon = est.lon,
+    hover_name = est.id,
+    zoom = 10,
+    center = {'lat': 25.71804256894533,'lon': -100.30914201555723}
+    ))
+mapa.update_traces(
+	# hovertemplate = '<b>Vía Libre (Fase 1)</b><br><extra></extra>',
+    showlegend = True,
+    name = 'Estaciones Purple Air',
+    marker_color=est.temp,
+    marker_size=est.temp*1.3,
+    )
+
+# Mapa con Punto
+sendas = px.scatter_mapbox(pts,
+    lat = pts.ycoord,
+    lon = pts.xcoord,)
+sendas.update_traces(
+	# hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
+    showlegend = True,
+    name = 'Mediciones SMTTR',
+    marker_color="red",
+    marker_size = 10)
+
+# Mapa con Punto
+empre_map = px.scatter_mapbox(emp,
+    lat = emp.latitud,
+    lon = emp.longitud,)
+empre_map.update_traces(
+	# hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
+    showlegend = True,
+    name = 'Empresas Contaminantes',
+    marker_color="blue",
+    marker_size = 10)
+
+# Juntamos Capas
+mapa.add_trace(sendas.data[0])
+mapa.add_trace(empre_map.data[0])
+mapa.update_layout(
+    mapbox = dict(
+        accesstoken = mapbox_access_token,
+        style = 'dark'
     ),
-    showlegend=False,
-    margin = dict(t=0, l=0, r=0, b=0),
-)
-
+    height = 800,
+    hovermode = 'closest',
+    margin = dict(t = 0, l = 0, r = 0, b = 0, pad = 0)
+    )
+# mapa.update_traces(
+#     marker_size = 20
+#     )
+mapa.update_layout(
+    legend = dict(
+        yanchor = "top",
+        y = 0.99,
+        xanchor = "right",
+        x = 0.99,
+        font = dict(
+            family = 'Helvetica',
+            color = 'white'
+        ),
+        bgcolor = 'rgba(128, 128, 128, 0.4)'
+    ),
+    margin = dict(autoexpand = False),
+    autosize = True)
 
 app.layout = html.Div([
 
