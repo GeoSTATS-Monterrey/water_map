@@ -58,6 +58,8 @@ est = pd.read_csv("assets/purple_air/estaciones.csv", encoding='ISO-8859-1')
 df = pd.read_csv("assets/vh_nl.csv", encoding='ISO-8859-1')
 emp = pd.read_csv("assets/empresas.csv", encoding='ISO-8859-1')
 pts = pd.read_csv("assets/temp_hume.csv", encoding='ISO-8859-1')
+eys = pd.read_csv("assets/escuelas_salud.csv", encoding='ISO-8859-1')
+cyn = pd.read_csv("assets/conagua_nasa.csv", encoding='ISO-8859-1')
 
 # IMAGENES
 img1 = 'assets/info.png' # replace with your own image
@@ -97,46 +99,82 @@ px.set_mapbox_access_token(mapbox_access_token)
 
 
 
-mapa = go.Figure(px.scatter_mapbox(
+mapa = go.Figure(px.scatter_mapbox(est,
     lat = est.lat,
     lon = est.lon,
     hover_name = est.id,
     zoom = 10,
-    center = {'lat': 25.71804256894533,'lon': -100.30914201555723}
+    center = {'lat': 25.71804256894533,'lon': -100.30914201555723},
+    custom_data = ['estacion','temp']
     ))
 mapa.update_traces(
+	hovertemplate = '%{customdata[0]} <br> Temperatura: %{customdata[1]}°C',
 	# hovertemplate = '<b>Vía Libre (Fase 1)</b><br><extra></extra>',
     showlegend = True,
-    name = 'Estaciones Purple Air',
+    name = 'Purple Air',
     marker_color=est.temp,
     marker_size=est.temp*1.3,
     )
 
-# Mapa con Punto
-sendas = px.scatter_mapbox(pts,
+# SMTTR
+smttr_map = px.scatter_mapbox(pts,
     lat = pts.ycoord,
-    lon = pts.xcoord,)
-sendas.update_traces(
-	# hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
+    lon = pts.xcoord,
+    custom_data = ['Name'],
+    #hover_data={'Name':True,}
+    ) # 'Lon':False, 'interseccion':True, 'hechos_viales':True, 'lesionados':True, 'fallecidos':True, 
+smttr_map.update_traces(
+	hovertemplate = '%{customdata[0]}', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
     showlegend = True,
-    name = 'Mediciones SMTTR',
+    name = 'SMTTR',
     marker_color="red",
     marker_size = 10)
 
-# Mapa con Punto
+# CONAGUA Y NASA
+cyn_map = px.scatter_mapbox(cyn,
+    lat = cyn.lat,
+    lon = cyn.lon,
+    custom_data = ['estacion','temperatura'],
+    #hover_data={'Name':True,}
+    ) # 'Lon':False, 'interseccion':True, 'hechos_viales':True, 'lesionados':True, 'fallecidos':True, 
+cyn_map.update_traces(
+	hovertemplate = '%{customdata[0]} <br> Temperatura: %{customdata[1]}°C', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
+    showlegend = True,
+    name = 'Estaciones Meteorológicas',
+    marker_color=cyn.temperatura,
+    marker_size = cyn.temperatura*1.3)
+
+# Mapa Empresas
 empre_map = px.scatter_mapbox(emp,
     lat = emp.latitud,
-    lon = emp.longitud,)
+    lon = emp.longitud,
+    custom_data = ['raz_social','nombre_act'])
 empre_map.update_traces(
+	hovertemplate = '%{customdata[0]} <br> Giro: %{customdata[1]}',
 	# hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
     showlegend = True,
     name = 'Empresas Contaminantes',
     marker_color="blue",
     marker_size = 10)
 
+# Mapa Escuelas y salud
+esc_sal_map = px.scatter_mapbox(eys,
+    lat = eys.latitud,
+    lon = eys.longitud,
+    custom_data = ['raz_social','nombre_act'])
+esc_sal_map.update_traces(
+	hovertemplate = '%{customdata[0]} <br> Giro: %{customdata[1]}',
+	# hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
+    showlegend = True,
+    name = 'Escuelas y Salud',
+    marker_color="green",
+    marker_size = 10)
+
 # Juntamos Capas
-mapa.add_trace(sendas.data[0])
+# mapa.add_trace(esc_sal_map.data[0])
+mapa.add_trace(smttr_map.data[0])
 mapa.add_trace(empre_map.data[0])
+mapa.add_trace(cyn_map.data[0])
 mapa.update_layout(
     mapbox = dict(
         accesstoken = mapbox_access_token,
@@ -267,6 +305,20 @@ app.layout = html.Div([
 		dbc.Col([
 		
 			html.H1('GeoSTATS', style={'text-align':'center','color':'white'}),
+
+			dbc.Button("info", id="open", n_clicks=0),
+	        dbc.Modal(
+	            [
+	                dbc.ModalBody("aaaaaaaaaaaaaaaaaa"),
+	                dbc.ModalFooter(
+	                    dbc.Button(
+	                        "Close", id="close", className="ms-auto", n_clicks=0
+	                    )
+	                ),
+	            ],
+	            id="modal",
+	            is_open=False,
+	        ),
 		
 		], className='d-flex justify-content-center')
 
@@ -316,6 +368,16 @@ app.layout = html.Div([
 )
 def toggle_offcanvas(n1, is_open):
     if n1:
+        return not is_open
+    return is_open
+
+@app.callback(
+    Output("modal", "is_open"),
+    [Input("open", "n_clicks"), Input("close", "n_clicks")],
+    [State("modal", "is_open")],
+)
+def toggle_modal(n1, n2, is_open):
+    if n1 or n2:
         return not is_open
     return is_open
 
