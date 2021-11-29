@@ -12,8 +12,8 @@ import json as json
 import plotly.express as px
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State
-#import dash_auth
-# import geopandas as gpd
+import geopandas as gpd
+import shapely.geometry
 
 
 app = dash.Dash(__name__, title='GeoSTATS',
@@ -60,6 +60,9 @@ emp = pd.read_csv("assets/empresas.csv", encoding='ISO-8859-1')
 pts = pd.read_csv("assets/temp_hume.csv", encoding='ISO-8859-1')
 eys = pd.read_csv("assets/escuelas_salud.csv", encoding='ISO-8859-1')
 cyn = pd.read_csv("assets/conagua_nasa.csv", encoding='ISO-8859-1')
+cyn = pd.read_csv("assets/conagua_nasa.csv", encoding='ISO-8859-1')
+vmu_df = pd.read_csv("assets/veh_mun_2020.csv", encoding='ISO-8859-1')
+vmu = gpd.read_file('assets/vehiculos_municipios.geojson')
 
 # IMAGENES
 img1 = 'assets/info.png' # replace with your own image
@@ -72,32 +75,6 @@ encoded_img2 = base64.b64encode(open(img2, 'rb').read()).decode('ascii')
 # Mapbox Access Token
 mapbox_access_token = 'pk.eyJ1IjoiZWRnYXJndHpnenoiLCJhIjoiY2s4aHRoZTBjMDE4azNoanlxbmhqNjB3aiJ9.PI_g5CMTCSYw0UM016lKPw'
 px.set_mapbox_access_token(mapbox_access_token)
-
-#-- Graph
-# trace_list2 = [
-#     go.Scattermapbox(mode = "markers", lat=emp.latitud, lon=emp.longitud, opacity=0.7, marker = {'color': 'purple','size':10}, hoverlabel = dict(font_size = 20)), #, line = {'color': '#a60000','width':4}
-#     go.Scattermapbox(mode = "markers", lat=pts.ycoord, lon=pts.xcoord, opacity=0.7, marker = {'color': 'yellow','size':15}), #
-#     go.Scattermapbox(mode = "markers", lon = est.lon, lat = est.lat, marker = {'color': est.temp,'size':est.temp*1.5, 'colorscale':'Reds'}),
-#     # go.Densitymapbox(hoverinfo="skip", lat=est.lat, lon=est.lon, z=est.temp, radius=40, showscale=False, colorscale='Turbo')
-#     # go.Scattermapbox(hoverinfo="skip", mode = "lines", lon = lons_p4, lat = lats_p4, line = {'color': '#ed5732','width':4}, opacity=0.7,),
-#     # go.Scattermapbox(hoverinfo="skip", mode = "lines", lon = lons_p5, lat = lats_p5, line = {'color': '#ed7a32','width':4, }, opacity=0.7),
-# ]
-
-# mapa = go.Figure(data=trace_list2)
-# mapa.update_layout(clickmode='event+select', 
-#      mapbox=dict(
-#         accesstoken=mapbox_access_token,
-#         center=dict(lat=25.71804256894533, lon=-100.30914201555723),
-#         style="dark",
-#         zoom=10.5,
-#     ),
-#     showlegend=False,
-#     margin = dict(t=0, l=0, r=0, b=0),
-#     hoverlabel = dict(font_size = 20)
-# )
-
-
-
 
 mapa = go.Figure(px.scatter_mapbox(est,
     lat = est.lat,
@@ -115,6 +92,21 @@ mapa.update_traces(
     marker_color=est.temp,
     marker_size=est.temp*1.3,
     )
+
+# VEHICULOS
+vmu_map = px.choropleth_mapbox(
+	vmu_df, 
+	geojson=vmu, 
+	color="VEHICULOS",
+	opacity = 0.5,
+	locations="MUNICIPIO", 
+    featureidkey="properties.MUNICIPIO",
+    # custom_data = ['MUNICIPIO'],
+    #hover_data={'Name':True,}
+    ) # 'Lon':False, 'interseccion':True, 'hechos_viales':True, 'lesionados':True, 'fallecidos':True, 
+vmu_map.update_traces(
+	# hovertemplate = '%{customdata[0]}', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
+    name = 'Vehiculos')
 
 # SMTTR
 smttr_map = px.scatter_mapbox(pts,
@@ -170,7 +162,7 @@ esc_sal_map.update_traces(
     marker_color="green",
     marker_size = 10)
 
-# SMTTR
+# PM10
 pm10_map = px.scatter_mapbox(est,
     lat = est.lat,
     lon = est.lon,
@@ -186,6 +178,7 @@ pm10_map.update_traces(
 
 # Juntamos Capas
 # mapa.add_trace(esc_sal_map.data[0])
+mapa.add_trace(vmu_map.data[0])
 mapa.add_trace(smttr_map.data[0])
 mapa.add_trace(empre_map.data[0])
 mapa.add_trace(cyn_map.data[0])
