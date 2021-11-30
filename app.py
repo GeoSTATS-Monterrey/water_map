@@ -54,12 +54,12 @@ app.index_string = '''
 server = app.server
 
 # DATOS
-est = pd.read_csv("assets/purple_air/estaciones.csv", encoding='ISO-8859-1')
+est = pd.read_csv("assets/purple_air/esta.csv", encoding='ISO-8859-1')
 df = pd.read_csv("assets/vh_nl.csv", encoding='ISO-8859-1')
 emp = pd.read_csv("assets/empresas.csv", encoding='ISO-8859-1')
 pts = pd.read_csv("assets/temp_hume.csv", encoding='ISO-8859-1')
-eys = pd.read_csv("assets/escuelas_salud.csv", encoding='ISO-8859-1')
-cyn = pd.read_csv("assets/conagua_nasa.csv", encoding='ISO-8859-1')
+esc = pd.read_csv("assets/esc_guar.csv", encoding='ISO-8859-1')
+hos = pd.read_csv("assets/hosp_asil.csv", encoding='ISO-8859-1')
 cyn = pd.read_csv("assets/conagua_nasa.csv", encoding='ISO-8859-1')
 vmu_df = pd.read_csv("assets/veh_mun_2020.csv", encoding='ISO-8859-1')
 vmu = gpd.read_file('assets/vehiculos_municipios.geojson')
@@ -76,47 +76,32 @@ encoded_img2 = base64.b64encode(open(img2, 'rb').read()).decode('ascii')
 mapbox_access_token = 'pk.eyJ1IjoiZWRnYXJndHpnenoiLCJhIjoiY2s4aHRoZTBjMDE4azNoanlxbmhqNjB3aiJ9.PI_g5CMTCSYw0UM016lKPw'
 px.set_mapbox_access_token(mapbox_access_token)
 
-mapa = go.Figure(px.scatter_mapbox(est,
-    lat = est.lat,
-    lon = est.lon,
-    hover_name = est.id,
-    zoom = 10,
-    center = {'lat': 25.71804256894533,'lon': -100.30914201555723},
-    custom_data = ['estacion','temp']
-    ))
-mapa.update_traces(
-	hovertemplate = '%{customdata[0]} <br> Temperatura: %{customdata[1]}°C',
-	# hovertemplate = '<b>Vía Libre (Fase 1)</b><br><extra></extra>',
-    showlegend = True,
-    name = 'Purple Air',
-    marker_color=est.temp,
-    marker_size=est.temp*1.3,
-    )
-
-# VEHICULOS
-vmu_map = px.choropleth_mapbox(
+mapa = go.Figure(px.choropleth_mapbox(
 	vmu_df, 
 	geojson=vmu, 
 	color="VEHICULOS",
 	opacity = 0.5,
 	locations="MUNICIPIO", 
     featureidkey="properties.MUNICIPIO",
-    # custom_data = ['MUNICIPIO'],
-    #hover_data={'Name':True,}
-    ) # 'Lon':False, 'interseccion':True, 'hechos_viales':True, 'lesionados':True, 'fallecidos':True, 
-vmu_map.update_traces(
-	# hovertemplate = '%{customdata[0]}', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
-    name = 'Vehiculos')
+    custom_data = ['MUNICIPIO','VEHICULOS'],
+    zoom = 10,
+    center = {'lat': 25.71804256894533,'lon': -100.30914201555723},
+    ))
+mapa.update_traces(
+	showlegend = True,
+	hovertemplate = 'Municipio: %{customdata[0]} <br>Cantidad de vehiculos: %{customdata[1]}', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
+	name = 'Vehiculos por municipio')
 
 # SMTTR
 smttr_map = px.scatter_mapbox(pts,
     lat = pts.ycoord,
     lon = pts.xcoord,
     custom_data = ['Name'],
+    opacity = 0.7,
     #hover_data={'Name':True,}
     ) # 'Lon':False, 'interseccion':True, 'hechos_viales':True, 'lesionados':True, 'fallecidos':True, 
 smttr_map.update_traces(
-	hovertemplate = '%{customdata[0]}', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
+	hovertemplate = '<b>Estación:</b> %{customdata[0]}', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
     showlegend = True,
     name = 'SMTTR',
     marker_color=pts.temp,
@@ -127,66 +112,107 @@ cyn_map = px.scatter_mapbox(cyn,
     lat = cyn.lat,
     lon = cyn.lon,
     custom_data = ['estacion','temperatura'],
+    opacity = 0.7,
     #hover_data={'Name':True,}
     ) # 'Lon':False, 'interseccion':True, 'hechos_viales':True, 'lesionados':True, 'fallecidos':True, 
 cyn_map.update_traces(
-	hovertemplate = '%{customdata[0]} <br> Temperatura: %{customdata[1]}°C', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
+	hovertemplate = '<b>Estación: </b>%{customdata[0]} <br><b>Temperatura: </b>%{customdata[1]}°C', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
     showlegend = True,
     name = 'Estaciones Meteorológicas',
     marker_color=cyn.temperatura,
     marker_size = cyn.temperatura*1.3)
 
 # Mapa Empresas
-empre_map = px.scatter_mapbox(emp,
+empre_map = px.density_mapbox(emp,
     lat = emp.latitud,
     lon = emp.longitud,
-    custom_data = ['raz_social','nombre_act'])
+    custom_data = ['raz_social','nombre_act'],
+    opacity = 0.7,
+    radius=10)
 empre_map.update_traces(
-	hovertemplate = '%{customdata[0]} <br> Giro: %{customdata[1]}',
+	hovertemplate = '<b>Nombre: </b>%{customdata[0]} <br><b>Giro: </b>%{customdata[1]}',
 	# hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
     showlegend = True,
     name = 'Empresas Contaminantes',
-    marker_color="blue",
-    marker_size = 10)
+    # marker_color="blue",
+    # marker_size = 10
+    )
 
-# Mapa Escuelas y salud
-esc_sal_map = px.scatter_mapbox(eys,
-    lat = eys.latitud,
-    lon = eys.longitud,
-    custom_data = ['raz_social','nombre_act'])
-esc_sal_map.update_traces(
-	hovertemplate = '%{customdata[0]} <br> Giro: %{customdata[1]}',
+# Mapa Escuelas y guarderías
+esc_map = px.scatter_mapbox(esc,
+    lat = esc.latitud,
+    lon = esc.longitud,
+    custom_data = ['raz_social','nombre_act'],
+    opacity = 0.9,)
+esc_map.update_traces(
+	hovertemplate = '<b>Nombre: </b>%{customdata[0]} <br><b>Giro: </b>%{customdata[1]}',
 	# hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
     showlegend = True,
-    name = 'Escuelas y Salud',
-    marker_color="green",
-    marker_size = 10)
+    name = 'Escuelas y guarderías',
+    marker_color="#32a852",
+    marker_size = 5)
+
+# Mapa Hospitales y asilos
+hos_map = px.scatter_mapbox(hos,
+    lat = hos.latitud,
+    lon = hos.longitud,
+    custom_data = ['raz_social','nombre_act'],
+    opacity = 0.9,)
+hos_map.update_traces(
+	hovertemplate = '<b>Nombre: </b>%{customdata[0]} <br><b>Giro: </b>%{customdata[1]}',
+	# hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
+    showlegend = True,
+    name = 'Hospirtales y asilos',
+    marker_color="#4e42f5",
+    marker_size = 5)
 
 # PM10
-pm10_map = px.scatter_mapbox(est,
+est_map = px.scatter_mapbox(est,
     lat = est.lat,
     lon = est.lon,
     hover_name = est.id,
-    custom_data = ['estacion','pm10','pm2.5','pm1']
-    )
-pm10_map.update_traces(
-	hovertemplate = '%{customdata[0]}, %{customdata[1]}, %{customdata[2]}, %{customdata[3]}', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
+    custom_data = ['estacion','pm1'],
+    opacity = 0.7,
+    #hover_data={'Name':True,}
+    ) # 'Lon':False, 'interseccion':True, 'hechos_viales':True, 'lesionados':True, 'fallecidos':True, 
+est_map.update_traces(
+	hovertemplate = '<b>Estación: </b>%{customdata[0]} <br> <b>PM10: </b>:%{customdata[1]}°C',
+	# hovertemplate = '<b>Vía Libre (Fase 1)</b><br><extra></extra>',
     showlegend = True,
     name = 'PM10',
-    marker_color=est.pm1,
-    marker_size = est.pm1)
+    marker_color=est['pm10'],
+    marker_size = est['pm10'],
+    )
+
+# PM10
+pm25_map = px.scatter_mapbox(est,
+    lat = est.lat,
+    lon = est.lon,
+    hover_name = est.id,
+    custom_data = ['estacion','pm2.5'],
+    opacity = 0.7,
+    )
+pm25_map.update_traces(
+	hovertemplate = '<b>Estación: </b>%{customdata[0]}, <b>PM2.5: </b>%{customdata[1]}}', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
+    showlegend = True,
+    name = 'PM2.5',
+    marker_color=est['pm2.5'],
+    marker_size = est['pm2.5'])
 
 # Juntamos Capas
-# mapa.add_trace(esc_sal_map.data[0])
-mapa.add_trace(vmu_map.data[0])
-mapa.add_trace(smttr_map.data[0])
 mapa.add_trace(empre_map.data[0])
+mapa.add_trace(est_map.data[0])
+mapa.add_trace(pm25_map.data[0])
 mapa.add_trace(cyn_map.data[0])
-# mapa.add_trace(pm10_map.data[0])
+mapa.add_trace(smttr_map.data[0])
+mapa.add_trace(esc_map.data[0])
+mapa.add_trace(hos_map.data[0])
+# mapa.add_trace(esc_sal_map.data[0])
+
 mapa.update_layout(
     mapbox = dict(
         accesstoken = mapbox_access_token,
-        style = 'streets'
+        style = 'light'
     ),
     height = 800,
     hovermode = 'closest',
@@ -197,10 +223,10 @@ mapa.update_layout(
 #     )
 mapa.update_layout(
     legend = dict(
-        yanchor = "top",
-        y = 0.99,
-        xanchor = "right",
-        x = 0.99,
+        yanchor = "bottom",
+        y = 0,
+        xanchor = "left",
+        x = 0,
         font = dict(
             family = 'Helvetica',
             color = 'white'
@@ -213,13 +239,13 @@ mapa.update_layout(
 app.layout = html.Div([
 
 	# FILTROS
-	dbc.Button(
-		html.Img(src='data:image/png;base64,{}'.format(encoded_img2), 
-			style={'width':'100%',}
-		), 
-		id="open-offcanvas", 
-		n_clicks=0,
-		style={'position':'absolute','z-index':'1','right':'1%','top':'1%','width':'5%','background-color':'#9e9595','border':'none'}),
+	# dbc.Button(
+	# 	html.Img(src='data:image/png;base64,{}'.format(encoded_img2), 
+	# 		style={'width':'100%',}
+	# 	), 
+	# 	id="open-offcanvas", 
+	# 	n_clicks=0,
+	# 	style={'position':'absolute','z-index':'1','right':'1%','top':'1%','width':'5%','background-color':'#9e9595','border':'none'}),
     dbc.Offcanvas([
 
     	dbc.Row([
@@ -312,7 +338,7 @@ app.layout = html.Div([
 
 		dbc.Col([
 		
-			html.H1('GeoSTATS', style={'text-align':'center','color':'white'}),
+			html.H1('GeoSTATS', style={'text-align':'center','color':'black'}),
 
 			# dbc.Button("info", id="open", n_clicks=0),
 	        # dbc.Modal(
@@ -369,15 +395,15 @@ app.layout = html.Div([
 
 ], className='m-0', style={'height':'100vh'})
 
-@app.callback(
-    Output("offcanvas", "is_open"),
-    Input("open-offcanvas", "n_clicks"),
-    [State("offcanvas", "is_open")],
-)
-def toggle_offcanvas(n1, is_open):
-    if n1:
-        return not is_open
-    return is_open
+# @app.callback(
+#     Output("offcanvas", "is_open"),
+#     Input("open-offcanvas", "n_clicks"),
+#     [State("offcanvas", "is_open")],
+# )
+# def toggle_offcanvas(n1, is_open):
+#     if n1:
+#         return not is_open
+#     return is_open
 
 # @app.callback(
 #     Output("modal", "is_open"),
