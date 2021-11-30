@@ -89,19 +89,19 @@ mapa = go.Figure(px.choropleth_mapbox(
     ))
 mapa.update_traces(
 	showlegend = True,
-	hovertemplate = 'Municipio: %{customdata[0]} <br>Cantidad de vehiculos: %{customdata[1]}', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
+	hovertemplate = '<b>Municipio: </b>%{customdata[0]}<br><b>Cantidad de vehiculos: </b>%{customdata[1]}',
 	name = 'Vehiculos por municipio')
 
 # SMTTR
 smttr_map = px.scatter_mapbox(pts,
     lat = pts.ycoord,
     lon = pts.xcoord,
-    custom_data = ['Name'],
+    custom_data = ['Name','temp','humedad','sens_ter'],
     opacity = 0.7,
     #hover_data={'Name':True,}
-    ) # 'Lon':False, 'interseccion':True, 'hechos_viales':True, 'lesionados':True, 'fallecidos':True, 
+    )
 smttr_map.update_traces(
-	hovertemplate = '<b>Estación:</b> %{customdata[0]}', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
+	hovertemplate = '<b>Estación: </b>%{customdata[0]}<br><b>Temperatura: </b>%{customdata[1]}<br><b>Humedad: </b>%{customdata[2]}<br><b>Sensasión Térmica: </b>%{customdata[3]}',
     showlegend = True,
     name = 'SMTTR',
     marker_color=pts.temp,
@@ -111,12 +111,12 @@ smttr_map.update_traces(
 cyn_map = px.scatter_mapbox(cyn,
     lat = cyn.lat,
     lon = cyn.lon,
-    custom_data = ['estacion','temperatura'],
+    custom_data = ['estacion','temperatura','fuente'],
     opacity = 0.7,
     #hover_data={'Name':True,}
-    ) # 'Lon':False, 'interseccion':True, 'hechos_viales':True, 'lesionados':True, 'fallecidos':True, 
+    ) 
 cyn_map.update_traces(
-	hovertemplate = '<b>Estación: </b>%{customdata[0]} <br><b>Temperatura: </b>%{customdata[1]}°C', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
+	hovertemplate = '<b>Estación: </b>%{customdata[0]}<br><b>Temperatura: </b>%{customdata[1]}°C<br><b>Fuente: </b>%{customdata[2]}',
     showlegend = True,
     name = 'Estaciones Meteorológicas',
     marker_color=cyn.temperatura,
@@ -130,8 +130,7 @@ empre_map = px.density_mapbox(emp,
     opacity = 0.7,
     radius=10)
 empre_map.update_traces(
-	hovertemplate = '<b>Nombre: </b>%{customdata[0]} <br><b>Giro: </b>%{customdata[1]}',
-	# hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
+	hovertemplate = '<b>Nombre: </b>%{customdata[0]}<br><b>Giro: </b>%{customdata[1]}',
     showlegend = True,
     name = 'Empresas Contaminantes',
     # marker_color="blue",
@@ -146,7 +145,6 @@ esc_map = px.scatter_mapbox(esc,
     opacity = 0.9,)
 esc_map.update_traces(
 	hovertemplate = '<b>Nombre: </b>%{customdata[0]} <br><b>Giro: </b>%{customdata[1]}',
-	# hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
     showlegend = True,
     name = 'Escuelas y guarderías',
     marker_color="#32a852",
@@ -160,7 +158,6 @@ hos_map = px.scatter_mapbox(hos,
     opacity = 0.9,)
 hos_map.update_traces(
 	hovertemplate = '<b>Nombre: </b>%{customdata[0]} <br><b>Giro: </b>%{customdata[1]}',
-	# hovertemplate = '<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>',
     showlegend = True,
     name = 'Hospirtales y asilos',
     marker_color="#4e42f5",
@@ -173,11 +170,9 @@ est_map = px.scatter_mapbox(est,
     hover_name = est.id,
     custom_data = ['estacion','pm1'],
     opacity = 0.7,
-    #hover_data={'Name':True,}
-    ) # 'Lon':False, 'interseccion':True, 'hechos_viales':True, 'lesionados':True, 'fallecidos':True, 
+    )
 est_map.update_traces(
-	hovertemplate = '<b>Estación: </b>%{customdata[0]} <br> <b>PM10: </b>:%{customdata[1]}°C',
-	# hovertemplate = '<b>Vía Libre (Fase 1)</b><br><extra></extra>',
+	hovertemplate = '<b>Estación: </b>%{customdata[0]} <br><b>PM10: </b>%{customdata[1]}°C',
     showlegend = True,
     name = 'PM10',
     marker_color=est['pm10'],
@@ -193,7 +188,7 @@ pm25_map = px.scatter_mapbox(est,
     opacity = 0.7,
     )
 pm25_map.update_traces(
-	hovertemplate = '<b>Estación: </b>%{customdata[0]}, <b>PM2.5: </b>%{customdata[1]}}', #<b>Alfonso Reyes con Las Sendas</b><br><extra></extra>
+	hovertemplate = '<b>Estación: </b>%{customdata[0]} <br><b>PM2.5: </b>%{customdata[1]}',
     showlegend = True,
     name = 'PM2.5',
     marker_color=est['pm2.5'],
