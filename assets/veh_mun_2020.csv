@@ -1,55 +1,55 @@
-MUNICIPIO_NORMAL,MUNICIPIO,MUNICIPIO_original,VEHICULOS
-ABASOLO,Abasolo,Abasolo,1089
-AGUALEGUAS,Agualeguas,Agualeguas,1869
-ALDAMAS,Los Aldamas,Los Aldamas,449
-ALLENDE,Allende,Allende,23526
-ANAHUAC,Anahuac,Anáhuac,4608
-APODACA,Apodaca,Apodaca,237137
-ARAMBERRI,Aramberri,Aramberri,2963
-BUSTAMANTE,Bustamante,Bustamante,1111
-CADEREYTA JIMENEZ,Cadereyta Jimenez,Cadereyta Jiménez,49813
-CERRALVO,Cerralvo,Cerralvo,4398
-CHINA,China,China,4991
-CIENEGA DE FLORES,Cienega de Flores,Ciénega de Flores,12268
-COLOMBIA,NA,NA,95
-DATO NO REGISTRADO,NA,NA,2
-DR. ARROYO,Doctor Arroyo,Doctor Arroyo,12422
-DR. COSS,Doctor Coss,Doctor Coss,839
-DR. GONZALEZ,Doctor Gonzalez,Doctor González,1435
-EL CARMEN,El Carmen,El Carmen,7863
-GALEANA,Galeana,Galeana,10810
-GARCIA,Garcia,García,54481
-GRAL BRAVO,General Bravo,General Bravo,2743
-GRAL ESCOBEDO,General Escobedo,General Escobedo,147728
-GRAL TERAN,General Teran,General Terán,6854
-GRAL TREVI�O,General Trevino,General Treviño,623
-GRAL ZUAZUA,General Zuazua,General Zuazua,12119
-GUADALUPE,Guadalupe,Guadalupe,347855
-HERRERAS,Los Herreras,Los Herreras,751
-HIDALGO,Hidalgo,Hidalgo,6873
-HIGUERAS,Higueras,Higueras,586
-HUALAHUISES,Hualahuises,Hualahuises,2528
-ITURBIDE,Iturbide,Iturbide,737
-JUAREZ,Juarez,Juárez,80820
-LAMPAZOS,Lampazos de Naranjo,Lampazos de Naranjo,1449
-LINARES,Linares,Linares,26148
-MARIN,Marin,Marín,2370
-MELCHOR OCAMPO,Melchor Ocampo,Melchor Ocampo,502
-MIER Y NORIEGA,Mier y Noriega,Mier y Noriega,1135
-MINA,Mina,Mina,1870
-MONTEMORELOS,Montemorelos,Montemorelos,30904
-MONTERREY,Monterrey,Monterrey,697050
-PARAS,Paras,Parás,440
-PESQUERIA ,Pesqueria,Pesquería,13146
-RAMONES,Los Ramones,Los Ramones,2358
-RAYONES,Rayones,Rayones,569
-SABINAS HIDALGO,Sabinas Hidalgo,Sabinas Hidalgo,16362
-SALINAS VICTORIA,Salinas Victoria,Salinas Victoria,13645
-SAN NICOLAS DE LOS GARZA,San Nicolas de los Garza,San Nicolás de los Garza,286625
-SAN PEDRO GARZA GARCIA,San Pedro Garza Garcia,San Pedro Garza García,125511
-SANTA CATARINA,Santa Catarina,Santa Catarina,120732
-SANTIAGO,Santiago,Santiago,31391
-SN R DE GALEANA,,,44
-VALLECILLO,Vallecillo,Vallecillo,727
-VILLALDAMA,Villaldama,Villaldama,1803
-ZARAGOZA,General Zaragoza,General Zaragoza,754
+MUNICIPIO_NORMAL,MUNICIPIO,MUNICIPIO_original,VEHICULOS,poblacion,veh_percap,color_vpc
+SAN PEDRO GARZA GARCIA,San Pedro Garza Garcia,San Pedro Garza García,125511,132169,0.949625101,#ff2903
+SAN NICOLAS DE LOS GARZA,San Nicolas de los Garza,San Nicolás de los Garza,286625,412199,0.695355884,#f2ff03
+SANTIAGO,Santiago,Santiago,31391,46784,0.670977257,#f2ff03
+ALLENDE,Allende,Allende,23526,35289,0.666666667,#f2ff03
+DR. COSS,Doctor Coss,Doctor Coss,839,1360,0.616911765,#f2ff03
+MONTERREY,Monterrey,Monterrey,697050,1142994,0.609845721,#f2ff03
+CERRALVO,Cerralvo,Cerralvo,4398,7340,0.599182561,#f2ff03
+AGUALEGUAS,Agualeguas,Agualeguas,1869,3382,0.552631579,#f2ff03
+GUADALUPE,Guadalupe,Guadalupe,347855,643143,0.540867272,#f2ff03
+VILLALDAMA,Villaldama,Villaldama,1803,3573,0.504617968,#f2ff03
+CHINA,China,China,4991,9930,0.502618328,#f2ff03
+GRAL BRAVO,General Bravo,General Bravo,2743,5506,0.498183799,#03fc39
+GRAL TERAN,General Teran,General Terán,6854,14109,0.485789213,#03fc39
+PARAS,Paras,Parás,440,906,0.485651214,#03fc39
+SABINAS HIDALGO,Sabinas Hidalgo,Sabinas Hidalgo,16362,34709,0.471405111,#03fc39
+VALLECILLO,Vallecillo,Vallecillo,727,1552,0.468427835,#03fc39
+MARIN,Marin,Marín,2370,5119,0.462981051,#03fc39
+MONTEMORELOS,Montemorelos,Montemorelos,30904,67428,0.458325918,#03fc39
+DR. GONZALEZ,Doctor Gonzalez,Doctor González,1435,3256,0.440724816,#03fc39
+RAMONES,Los Ramones,Los Ramones,2358,5389,0.437557988,#03fc39
+HIDALGO,Hidalgo,Hidalgo,6873,16086,0.427265946,#03fc39
+HIGUERAS,Higueras,Higueras,586,1386,0.422799423,#03fc39
+CADEREYTA JIMENEZ,Cadereyta Jimenez,Cadereyta Jiménez,49813,122337,0.407178531,#03fc39
+SANTA CATARINA,Santa Catarina,Santa Catarina,120732,306322,0.394134277,#03fc39
+HERRERAS,Los Herreras,Los Herreras,751,1959,0.383358857,#03fc39
+ABASOLO,Abasolo,Abasolo,1089,2974,0.366173504,#03fc39
+APODACA,Apodaca,Apodaca,237137,656464,0.361233822,#03fc39
+HUALAHUISES,Hualahuises,Hualahuises,2528,7026,0.359806433,#03fc39
+GRAL TREVI�O,General Trevino,General Treviño,623,1808,0.344579646,#03fc39
+DR. ARROYO,Doctor Arroyo,Doctor Arroyo,12422,36088,0.344214143,#03fc39
+MELCHOR OCAMPO,Melchor Ocampo,Melchor Ocampo,502,1483,0.338503034,#03fc39
+ALDAMAS,Los Aldamas,Los Aldamas,449,1407,0.319118692,#03fc39
+MINA,Mina,Mina,1870,6048,0.309193122,#03fc39
+LINARES,Linares,Linares,26148,84666,0.308837077,#03fc39
+GRAL ESCOBEDO,General Escobedo,General Escobedo,147728,481213,0.306990875,#03fc39
+BUSTAMANTE,Bustamante,Bustamante,1111,3661,0.303468998,#03fc39
+LAMPAZOS,Lampazos de Naranjo,Lampazos de Naranjo,1449,5351,0.270790506,#03fc39
+GALEANA,Galeana,Galeana,10810,40903,0.264283793,#03fc39
+ANAHUAC,Anahuac,Anáhuac,4608,18030,0.255574043,#03fc39
+RAYONES,Rayones,Rayones,569,2377,0.239377366,#0e992c
+ITURBIDE,Iturbide,Iturbide,737,3298,0.223468769,#0e992c
+ARAMBERRI,Aramberri,Aramberri,2963,14992,0.197638741,#0e992c
+CIENEGA DE FLORES,Cienega de Flores,Ciénega de Flores,12268,68747,0.178451423,#0e992c
+JUAREZ,Juarez,Juárez,80820,471523,0.171402031,#0e992c
+SALINAS VICTORIA,Salinas Victoria,Salinas Victoria,13645,86766,0.157262061,#0e992c
+MIER Y NORIEGA,Mier y Noriega,Mier y Noriega,1135,7652,0.148327235,#0e992c
+GARCIA,Garcia,García,54481,397205,0.137160912,#0e992c
+ZARAGOZA,General Zaragoza,General Zaragoza,754,6282,0.12002547,#0e992c
+GRAL ZUAZUA,General Zuazua,General Zuazua,12119,102149,0.118640417,#0e992c
+PESQUERIA ,Pesqueria,Pesquería,13146,147624,0.089050561,#0e992c
+EL CARMEN,El Carmen,El Carmen,7863,104478,0.075259863,#0e992c
+COLOMBIA,NA,NA,95,0,0,#0e992c
+DATO NO REGISTRADO,NA,NA,2,0,0,#0e992c
+SN R DE GALEANA,,,44,0,0,#0e992c

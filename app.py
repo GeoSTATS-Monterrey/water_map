@@ -81,19 +81,19 @@ px.set_mapbox_access_token(mapbox_access_token)
 mapa = go.Figure(px.choropleth_mapbox(
 	vmu_df, 
 	geojson=vmu, 
-	color="VEHICULOS",
+	color=vmu_df.veh_percap,
 	opacity = 0.5,
 	locations="MUNICIPIO", 
     featureidkey="properties.MUNICIPIO",
-    custom_data = ['MUNICIPIO','VEHICULOS'],
+    custom_data = ['MUNICIPIO','VEHICULOS','poblacion','veh_percap'],
     zoom = 10,
     center = {'lat': 25.71804256894533,'lon': -100.30914201555723},
     ))
 mapa.update_traces(
-	showlegend = True,
-	colorscale ='Blues',
-	hovertemplate = '<b>Municipio: </b>%{customdata[0]}<br><b>Cantidad de vehiculos: </b>%{customdata[1]}',
-	name = 'Vehiculos por municipio - ICVNL')
+	showlegend = True, 
+	hovertemplate = '<b>Municipio: </b>%{customdata[0]}<br><b>Cantidad de vehiculos: </b>%{customdata[1]}<br><b>Población: </b>%{customdata[2]}<br><b>Vehiculos por persona: </b>%{customdata[3]}',
+	name = 'Vehiculos per cápita - ICVNL, INEGI'
+	)
 
 # SMTTR
 smttr_map = px.scatter_mapbox(pts,
