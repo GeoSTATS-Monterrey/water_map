@@ -356,13 +356,13 @@ app.layout = html.Div([
 		
 			html.H1('GeoSTATS', style={'text-align':'center','color':'black'}),
 
-			dbc.Button([
-					html.Img(src='data:image/png;base64,{}'.format(encoded_img1), 
-					className="p-0 img-fluid", style={'margin':'0'})
-						],
-				id="open", 
-				n_clicks=0,
-				style={'background-color':'transparent','border':'none','color':'black','width':'30px','padding':'0 0 0 0'}),
+			# dbc.Button([
+			# 		html.Img(src='data:image/png;base64,{}'.format(encoded_img1), 
+			# 		className="p-0 img-fluid", style={'margin':'0'})
+			# 			],
+			# 	id="open", 
+			# 	n_clicks=0,
+			# 	style={'background-color':'transparent','border':'none','color':'black','width':'30px','padding':'0 0 0 0'}),
 
 	        dbc.Modal(
 	            [
