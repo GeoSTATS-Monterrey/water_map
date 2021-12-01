@@ -31,7 +31,6 @@ layout = html.Div([
 
 		dbc.Col([
 		
-			html.H1('Inventario de Vehículos Registrados en Nuevo León'),
 		
 		])
 

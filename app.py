@@ -71,6 +71,8 @@ encoded_img1 = base64.b64encode(open(img1, 'rb').read()).decode('ascii')
 img2 = 'assets/layers.png' # replace with your own image
 encoded_img2 = base64.b64encode(open(img2, 'rb').read()).decode('ascii')
 
+img3 = 'assets/close.png' # replace with your own image
+encoded_img3 = base64.b64encode(open(img3, 'rb').read()).decode('ascii')
 
 # Mapbox Access Token
 mapbox_access_token = 'pk.eyJ1IjoiZWRnYXJndHpnenoiLCJhIjoiY2s4aHRoZTBjMDE4azNoanlxbmhqNjB3aiJ9.PI_g5CMTCSYw0UM016lKPw'
@@ -89,8 +91,9 @@ mapa = go.Figure(px.choropleth_mapbox(
     ))
 mapa.update_traces(
 	showlegend = True,
+	colorscale ='Blues',
 	hovertemplate = '<b>Municipio: </b>%{customdata[0]}<br><b>Cantidad de vehiculos: </b>%{customdata[1]}',
-	name = 'Vehiculos por municipio')
+	name = 'Vehiculos por municipio - ICVNL')
 
 # SMTTR
 smttr_map = px.scatter_mapbox(pts,
@@ -103,8 +106,8 @@ smttr_map = px.scatter_mapbox(pts,
 smttr_map.update_traces(
 	hovertemplate = '<b>Estación: </b>%{customdata[0]}<br><b>Temperatura: </b>%{customdata[1]}<br><b>Humedad: </b>%{customdata[2]}<br><b>Sensasión Térmica: </b>%{customdata[3]}',
     showlegend = True,
-    name = 'SMTTR',
-    marker_color=pts.temp,
+    name = 'Temperatura - SMTTR',
+    marker_color=pts.color,
     marker_size = pts.temp*1.3)
 
 # CONAGUA Y NASA
@@ -118,9 +121,25 @@ cyn_map = px.scatter_mapbox(cyn,
 cyn_map.update_traces(
 	hovertemplate = '<b>Estación: </b>%{customdata[0]}<br><b>Temperatura: </b>%{customdata[1]}°C<br><b>Fuente: </b>%{customdata[2]}',
     showlegend = True,
-    name = 'Estaciones Meteorológicas',
-    marker_color=cyn.temperatura,
+    name = 'Temperatura - CONAGUA y NASA',
+    marker_color=cyn.color,
     marker_size = cyn.temperatura*1.3)
+
+# Purple Air
+ptemp_map = px.scatter_mapbox(est,
+    lat = est.lat,
+    lon = est.lon,
+    hover_name = est.id,
+    custom_data = ['estacion','temp'],
+    opacity = 0.7,
+    )
+ptemp_map.update_traces(
+	hovertemplate = '<b>Estación: </b>%{customdata[0]} <br><b>Temperatura: </b>%{customdata[1]}°C',
+    showlegend = True,
+    name = 'Temperatura - Purple Air',
+    marker_color=est.color_tempe,
+    marker_size = est['temp'],
+    )
 
 # Mapa Empresas
 empre_map = px.density_mapbox(emp,
@@ -132,7 +151,8 @@ empre_map = px.density_mapbox(emp,
 empre_map.update_traces(
 	hovertemplate = '<b>Nombre: </b>%{customdata[0]}<br><b>Giro: </b>%{customdata[1]}',
     showlegend = True,
-    name = 'Empresas Contaminantes',
+    name = 'Empresas Contaminantes - INEGI',
+    colorscale ='Reds'
     # marker_color="blue",
     # marker_size = 10
     )
@@ -146,7 +166,7 @@ esc_map = px.scatter_mapbox(esc,
 esc_map.update_traces(
 	hovertemplate = '<b>Nombre: </b>%{customdata[0]} <br><b>Giro: </b>%{customdata[1]}',
     showlegend = True,
-    name = 'Escuelas y guarderías',
+    name = 'Escuelas y guarderías - INEGI',
     marker_color="#32a852",
     marker_size = 5)
 
@@ -159,27 +179,27 @@ hos_map = px.scatter_mapbox(hos,
 hos_map.update_traces(
 	hovertemplate = '<b>Nombre: </b>%{customdata[0]} <br><b>Giro: </b>%{customdata[1]}',
     showlegend = True,
-    name = 'Hospirtales y asilos',
+    name = 'Hospirtales y asilos - INEGI',
     marker_color="#4e42f5",
     marker_size = 5)
 
 # PM10
-est_map = px.scatter_mapbox(est,
+pm10_map = px.scatter_mapbox(est,
     lat = est.lat,
     lon = est.lon,
     hover_name = est.id,
     custom_data = ['estacion','pm1'],
     opacity = 0.7,
     )
-est_map.update_traces(
+pm10_map.update_traces(
 	hovertemplate = '<b>Estación: </b>%{customdata[0]} <br><b>PM10: </b>%{customdata[1]}°C',
     showlegend = True,
-    name = 'PM10',
-    marker_color=est['pm10'],
+    name = 'PM10 - Purple Air',
+    marker_color=est['color_pm10'],
     marker_size = est['pm10'],
     )
 
-# PM10
+# PM2.5
 pm25_map = px.scatter_mapbox(est,
     lat = est.lat,
     lon = est.lon,
@@ -190,16 +210,17 @@ pm25_map = px.scatter_mapbox(est,
 pm25_map.update_traces(
 	hovertemplate = '<b>Estación: </b>%{customdata[0]} <br><b>PM2.5: </b>%{customdata[1]}',
     showlegend = True,
-    name = 'PM2.5',
-    marker_color=est['pm2.5'],
+    name = 'PM2.5 - Purple Air',
+    marker_color=est['color_pm2.5'],
     marker_size = est['pm2.5'])
 
 # Juntamos Capas
 mapa.add_trace(empre_map.data[0])
-mapa.add_trace(est_map.data[0])
+mapa.add_trace(pm10_map.data[0])
 mapa.add_trace(pm25_map.data[0])
 mapa.add_trace(cyn_map.data[0])
 mapa.add_trace(smttr_map.data[0])
+mapa.add_trace(ptemp_map.data[0])
 mapa.add_trace(esc_map.data[0])
 mapa.add_trace(hos_map.data[0])
 # mapa.add_trace(esc_sal_map.data[0])
@@ -335,21 +356,37 @@ app.layout = html.Div([
 		
 			html.H1('GeoSTATS', style={'text-align':'center','color':'black'}),
 
-			# dbc.Button("info", id="open", n_clicks=0),
-	        # dbc.Modal(
-	        #     [
-	        #         dbc.ModalBody("aaaaaaaaaaaaaaaaaa"),
-	        #         dbc.ModalFooter(
-	        #             dbc.Button(
-	        #                 "Close", id="close", className="ms-auto", n_clicks=0
-	        #             )
-	        #         ),
-	        #     ],
-	        #     id="modal",
-	        #     is_open=False,
-	        # ),
+			dbc.Button([
+					html.Img(src='data:image/png;base64,{}'.format(encoded_img1), 
+					className="p-0 img-fluid", style={'margin':'0'})
+						],
+				id="open", 
+				n_clicks=0,
+				style={'background-color':'transparent','border':'none','color':'black','width':'30px','padding':'0 0 0 0'}),
+
+	        dbc.Modal(
+	            [
+	                dbc.ModalBody([
+
+	                	dbc.Button([
+							html.Img(src='data:image/png;base64,{}'.format(encoded_img3), 
+							className="p-0 img-fluid")
+								],
+						id="close", 
+						n_clicks=0,
+						style={'background-color':'transparent','border':'none','color':'black','width':'30px','padding':'0'}),
+
+	                	html.Br(),
+
+						"Resumen de geostats, ficha técnica, colaboradores, etc",
+
+	                ]),
+	            ],
+	            id="modal",
+	            is_open=False,
+	        ),
 		
-		], className='d-flex justify-content-center')
+		], className='d-flex justify-content-center', style={'float':'left'})
 
 	], className='m-0', style={'height':'10vh', 'position':'absolute','z-index':'1','left':'40%'}),
 
@@ -400,15 +437,15 @@ app.layout = html.Div([
 #         return not is_open
 #     return is_open
 
-# @app.callback(
-#     Output("modal", "is_open"),
-#     [Input("open", "n_clicks"), Input("close", "n_clicks")],
-#     [State("modal", "is_open")],
-# )
-# def toggle_modal(n1, n2, is_open):
-#     if n1 or n2:
-#         return not is_open
-#     return is_open
+@app.callback(
+    Output("modal", "is_open"),
+    [Input("open", "n_clicks"), Input("close", "n_clicks")],
+    [State("modal", "is_open")],
+)
+def toggle_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
 
 if __name__ == '__main__':
     app.run_server(debug=True)
