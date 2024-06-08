@@ -6,7 +6,7 @@ authors = ["Hiram Muñoz <hirammunozr@outlook.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 brotli = "^1.1.0"
 click = "^8.1.7"
 colorama = "^0.4.6"
