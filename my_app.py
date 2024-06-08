@@ -2,24 +2,17 @@ import dash
 from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
-import plotly.express as px
-from datetime import datetime as dt
 import base64
 import dash_daq as daq
 import pandas as pd
-import numpy as np
-import json as json
 import plotly.express as px
 import plotly.graph_objs as go
-from dash.dependencies import Input, Output, State
 import geopandas as gpd
-import shapely.geometry
-
 
 app = dash.Dash(__name__, title='GeoSTATS',
-				external_stylesheets = [dbc.themes.BOOTSTRAP],
-				meta_tags=[{'name': 'viewport',
-                             'content': 'width=device-width, initial-scale=1.0'},])
+                external_stylesheets=[dbc.themes.BOOTSTRAP],
+                meta_tags=[{'name': 'viewport',
+                            'content': 'width=device-width, initial-scale=1.0'}, ])
 
 # GOOGLE ANALYTICS TAGS
 app.index_string = '''
@@ -65,13 +58,13 @@ vmu_df = pd.read_csv("assets/veh_mun_2020.csv", encoding='ISO-8859-1')
 vmu = gpd.read_file('assets/vehiculos_municipios.geojson')
 
 # IMAGENES
-img1 = 'assets/info.png' # replace with your own image
+img1 = 'assets/info.png'  # replace with your own image
 encoded_img1 = base64.b64encode(open(img1, 'rb').read()).decode('ascii')
 
-img2 = 'assets/layers.png' # replace with your own image
+img2 = 'assets/layers.png'  # replace with your own image
 encoded_img2 = base64.b64encode(open(img2, 'rb').read()).decode('ascii')
 
-img3 = 'assets/close.png' # replace with your own image
+img3 = 'assets/close.png'  # replace with your own image
 encoded_img3 = base64.b64encode(open(img3, 'rb').read()).decode('ascii')
 
 # Mapbox Access Token
@@ -79,141 +72,141 @@ mapbox_access_token = 'pk.eyJ1IjoiZWRnYXJndHpnenoiLCJhIjoiY2s4aHRoZTBjMDE4azNoan
 px.set_mapbox_access_token(mapbox_access_token)
 
 mapa = go.Figure(px.choropleth_mapbox(
-	vmu_df, 
-	geojson=vmu, 
-	color=vmu_df.veh_percap,
-	opacity = 0.4,
-	color_continuous_scale="oranges",
-	locations="MUNICIPIO", 
+    vmu_df,
+    geojson=vmu,
+    color=vmu_df.veh_percap,
+    opacity=0.4,
+    color_continuous_scale="oranges",
+    locations="MUNICIPIO",
     featureidkey="properties.MUNICIPIO",
-    custom_data = ['MUNICIPIO','VEHICULOS','poblacion','veh_percap'],
-    zoom = 10,
-    center = {'lat': 25.71804256894533,'lon': -100.30914201555723},
-    ))
+    custom_data=['MUNICIPIO', 'VEHICULOS', 'poblacion', 'veh_percap'],
+    zoom=10,
+    center={'lat': 25.71804256894533, 'lon': -100.30914201555723},
+))
 mapa.update_traces(
-	showlegend = True, 
-	hovertemplate = '<b>Municipio: </b>%{customdata[0]}<br><b>Cantidad de vehiculos: </b>%{customdata[1]}<br><b>Población: </b>%{customdata[2]}<br><b>Vehiculos por persona: </b>%{customdata[3]}',
-	name = 'Vehiculos per cápita - ICVNL, INEGI'
-	)
+    showlegend=True,
+    hovertemplate='<b>Municipio: </b>%{customdata[0]}<br><b>Cantidad de vehiculos: </b>%{customdata[1]}<br><b>Población: </b>%{customdata[2]}<br><b>Vehiculos por persona: </b>%{customdata[3]}',
+    name='Vehiculos per cápita - ICVNL, INEGI'
+)
 
 # SMTTR
 smttr_map = px.scatter_mapbox(pts,
-    lat = pts.ycoord,
-    lon = pts.xcoord,
-    custom_data = ['Name','temp','humedad','sens_ter'],
-    opacity = 0.7,
-    #hover_data={'Name':True,}
-    )
+                              lat=pts.ycoord,
+                              lon=pts.xcoord,
+                              custom_data=['Name', 'temp', 'humedad', 'sens_ter'],
+                              opacity=0.7,
+                              # hover_data={'Name':True,}
+                              )
 smttr_map.update_traces(
-	hovertemplate = '<b>Estación: </b>%{customdata[0]}<br><b>Temperatura: </b>%{customdata[1]}<br><b>Humedad: </b>%{customdata[2]}<br><b>Sensasión Térmica: </b>%{customdata[3]}',
-    showlegend = True,
-    name = 'Temperatura - SMTTR',
+    hovertemplate='<b>Estación: </b>%{customdata[0]}<br><b>Temperatura: </b>%{customdata[1]}<br><b>Humedad: </b>%{customdata[2]}<br><b>Sensasión Térmica: </b>%{customdata[3]}',
+    showlegend=True,
+    name='Temperatura - SMTTR',
     marker_color=pts.color,
-    marker_size = pts.temp*1.3)
+    marker_size=pts.temp * 1.3)
 
 # CONAGUA Y NASA
 cyn_map = px.scatter_mapbox(cyn,
-    lat = cyn.lat,
-    lon = cyn.lon,
-    custom_data = ['estacion','temperatura','fuente'],
-    opacity = 0.7,
-    #hover_data={'Name':True,}
-    ) 
+                            lat=cyn.lat,
+                            lon=cyn.lon,
+                            custom_data=['estacion', 'temperatura', 'fuente'],
+                            opacity=0.7,
+                            # hover_data={'Name':True,}
+                            )
 cyn_map.update_traces(
-	hovertemplate = '<b>Estación: </b>%{customdata[0]}<br><b>Temperatura: </b>%{customdata[1]}°C<br><b>Fuente: </b>%{customdata[2]}',
-    showlegend = True,
-    name = 'Temperatura - CONAGUA y NASA',
+    hovertemplate='<b>Estación: </b>%{customdata[0]}<br><b>Temperatura: </b>%{customdata[1]}°C<br><b>Fuente: </b>%{customdata[2]}',
+    showlegend=True,
+    name='Temperatura - CONAGUA y NASA',
     marker_color=cyn.color,
-    marker_size = cyn.temperatura*1.3)
+    marker_size=cyn.temperatura * 1.3)
 
 # Purple Air
 ptemp_map = px.scatter_mapbox(est,
-    lat = est.lat,
-    lon = est.lon,
-    hover_name = est.id,
-    custom_data = ['estacion','temp'],
-    opacity = 0.7,
-    )
+                              lat=est.lat,
+                              lon=est.lon,
+                              hover_name=est.id,
+                              custom_data=['estacion', 'temp'],
+                              opacity=0.7,
+                              )
 ptemp_map.update_traces(
-	hovertemplate = '<b>Estación: </b>%{customdata[0]} <br><b>Temperatura: </b>%{customdata[1]}°C',
-    showlegend = True,
-    name = 'Temperatura - Purple Air',
+    hovertemplate='<b>Estación: </b>%{customdata[0]} <br><b>Temperatura: </b>%{customdata[1]}°C',
+    showlegend=True,
+    name='Temperatura - Purple Air',
     marker_color=est.color_tempe,
-    marker_size = est['temp'],
-    )
+    marker_size=est['temp'],
+)
 
 # Mapa Empresas
 empre_map = px.density_mapbox(emp,
-    lat = emp.latitud,
-    lon = emp.longitud,
-    custom_data = ['raz_social','nombre_act'],
-    opacity = 0.7,
-    radius=10)
+                              lat=emp.latitud,
+                              lon=emp.longitud,
+                              custom_data=['raz_social', 'nombre_act'],
+                              opacity=0.7,
+                              radius=10)
 empre_map.update_traces(
-	hovertemplate = '<b>Nombre: </b>%{customdata[0]}<br><b>Giro: </b>%{customdata[1]}',
-    showlegend = True,
-    name = 'Empresas Contaminantes - INEGI',
-    colorscale ='Reds'
+    hovertemplate='<b>Nombre: </b>%{customdata[0]}<br><b>Giro: </b>%{customdata[1]}',
+    showlegend=True,
+    name='Empresas Contaminantes - INEGI',
+    colorscale='Reds'
     # marker_color="blue",
     # marker_size = 10
-    )
+)
 
 # Mapa Escuelas y guarderías
 esc_map = px.scatter_mapbox(esc,
-    lat = esc.latitud,
-    lon = esc.longitud,
-    custom_data = ['raz_social','nombre_act'],
-    opacity = 0.9,)
+                            lat=esc.latitud,
+                            lon=esc.longitud,
+                            custom_data=['raz_social', 'nombre_act'],
+                            opacity=0.9, )
 esc_map.update_traces(
-	hovertemplate = '<b>Nombre: </b>%{customdata[0]} <br><b>Giro: </b>%{customdata[1]}',
-    showlegend = True,
-    name = 'Escuelas y guarderías - INEGI',
+    hovertemplate='<b>Nombre: </b>%{customdata[0]} <br><b>Giro: </b>%{customdata[1]}',
+    showlegend=True,
+    name='Escuelas y guarderías - INEGI',
     marker_color="#32a852",
-    marker_size = 5)
+    marker_size=5)
 
 # Mapa Hospitales y asilos
 hos_map = px.scatter_mapbox(hos,
-    lat = hos.latitud,
-    lon = hos.longitud,
-    custom_data = ['raz_social','nombre_act'],
-    opacity = 0.9,)
+                            lat=hos.latitud,
+                            lon=hos.longitud,
+                            custom_data=['raz_social', 'nombre_act'],
+                            opacity=0.9, )
 hos_map.update_traces(
-	hovertemplate = '<b>Nombre: </b>%{customdata[0]} <br><b>Giro: </b>%{customdata[1]}',
-    showlegend = True,
-    name = 'Hospirtales y asilos - INEGI',
+    hovertemplate='<b>Nombre: </b>%{customdata[0]} <br><b>Giro: </b>%{customdata[1]}',
+    showlegend=True,
+    name='Hospirtales y asilos - INEGI',
     marker_color="#4e42f5",
-    marker_size = 5)
+    marker_size=5)
 
 # PM10
 pm10_map = px.scatter_mapbox(est,
-    lat = est.lat,
-    lon = est.lon,
-    hover_name = est.id,
-    custom_data = ['estacion','pm1'],
-    opacity = 0.7,
-    )
+                             lat=est.lat,
+                             lon=est.lon,
+                             hover_name=est.id,
+                             custom_data=['estacion', 'pm1'],
+                             opacity=0.7,
+                             )
 pm10_map.update_traces(
-	hovertemplate = '<b>Estación: </b>%{customdata[0]} <br><b>PM10: </b>%{customdata[1]}°C',
-    showlegend = True,
-    name = 'PM10 - Purple Air',
+    hovertemplate='<b>Estación: </b>%{customdata[0]} <br><b>PM10: </b>%{customdata[1]}°C',
+    showlegend=True,
+    name='PM10 - Purple Air',
     marker_color=est['color_pm10'],
-    marker_size = est['pm10'],
-    )
+    marker_size=est['pm10'],
+)
 
 # PM2.5
 pm25_map = px.scatter_mapbox(est,
-    lat = est.lat,
-    lon = est.lon,
-    hover_name = est.id,
-    custom_data = ['estacion','pm2.5'],
-    opacity = 0.7,
-    )
+                             lat=est.lat,
+                             lon=est.lon,
+                             hover_name=est.id,
+                             custom_data=['estacion', 'pm2.5'],
+                             opacity=0.7,
+                             )
 pm25_map.update_traces(
-	hovertemplate = '<b>Estación: </b>%{customdata[0]} <br><b>PM2.5: </b>%{customdata[1]}',
-    showlegend = True,
-    name = 'PM2.5 - Purple Air',
+    hovertemplate='<b>Estación: </b>%{customdata[0]} <br><b>PM2.5: </b>%{customdata[1]}',
+    showlegend=True,
+    name='PM2.5 - Purple Air',
     marker_color=est['color_pm2.5'],
-    marker_size = est['pm2.5'])
+    marker_size=est['pm2.5'])
 
 # Juntamos Capas
 mapa.add_trace(empre_map.data[0])
@@ -227,206 +220,207 @@ mapa.add_trace(hos_map.data[0])
 # mapa.add_trace(esc_sal_map.data[0])
 
 mapa.update_layout(
-    mapbox = dict(
-        accesstoken = mapbox_access_token,
-        style = 'light'
+    mapbox=dict(
+        accesstoken=mapbox_access_token,
+        style='light'
     ),
-    height = 800,
-    hovermode = 'closest',
-    margin = dict(t = 0, l = 0, r = 0, b = 0, pad = 0)
-    )
+    height=800,
+    hovermode='closest',
+    margin=dict(t=0, l=0, r=0, b=0, pad=0)
+)
 # mapa.update_traces(
 #     marker_size = 20
 #     )
 mapa.update_layout(
-    legend = dict(
-        yanchor = "bottom",
-        y = 0,
-        xanchor = "left",
-        x = 0,
-        font = dict(
-            family = 'Helvetica',
-            color = 'white'
+    legend=dict(
+        yanchor="bottom",
+        y=0,
+        xanchor="left",
+        x=0,
+        font=dict(
+            family='Helvetica',
+            color='white'
         ),
-        bgcolor = 'rgba(128, 128, 128, 0.4)'
+        bgcolor='rgba(128, 128, 128, 0.4)'
     ),
-    margin = dict(autoexpand = False),
-    autosize = True)
+    margin=dict(autoexpand=False),
+    autosize=True)
 
 app.layout = html.Div([
 
-	# FILTROS
-	# dbc.Button(
-	# 	html.Img(src='data:image/png;base64,{}'.format(encoded_img2), 
-	# 		style={'width':'100%',}
-	# 	), 
-	# 	id="open-offcanvas", 
-	# 	n_clicks=0,
-	# 	style={'position':'absolute','z-index':'1','right':'1%','top':'1%','width':'5%','background-color':'#9e9595','border':'none'}),
+    # FILTROS
+    # dbc.Button(
+    # 	html.Img(src='data:image/png;base64,{}'.format(encoded_img2),
+    # 		style={'width':'100%',}
+    # 	),
+    # 	id="open-offcanvas",
+    # 	n_clicks=0,
+    # 	style={'position':'absolute','z-index':'1','right':'1%','top':'1%','width':'5%','background-color':'#9e9595','border':'none'}),
     dbc.Offcanvas([
 
-    	dbc.Row([
+        dbc.Row([
 
-			dbc.Col([
+            dbc.Col([
 
-				daq.BooleanSwitch(
-	                id = '',
-	                on=False,
-	                color="#2A4A71",
-	                style={'float':'left'}, 
-	                className='px-4'
-	            ),		
+                daq.BooleanSwitch(
+                    id='',
+                    on=False,
+                    color="#2A4A71",
+                    style={'float': 'left'},
+                    className='px-4'
+                ),
 
-				html.H5('Temperatura y humedad'),
+                html.H5('Temperatura y humedad'),
 
-				daq.BooleanSwitch(
-	                id = '',
-	                on=False,
-	                color="#2A4A71",
-	                style={'float':'left'}, 
-	                className='px-4'
-	            ),
+                daq.BooleanSwitch(
+                    id='',
+                    on=False,
+                    color="#2A4A71",
+                    style={'float': 'left'},
+                    className='px-4'
+                ),
 
-	            html.H5('Vegetación'),
+                html.H5('Vegetación'),
 
-				daq.BooleanSwitch(
-	                id = '',
-	                on=False,
-	                color="#2A4A71",
-	                style={'float':'left'}, 
-	                className='px-4'
-	            ),
+                daq.BooleanSwitch(
+                    id='',
+                    on=False,
+                    color="#2A4A71",
+                    style={'float': 'left'},
+                    className='px-4'
+                ),
 
-				html.H5('Particulas PM#'),
+                html.H5('Particulas PM#'),
 
-				daq.BooleanSwitch(
-	                id = '',
-	                on=False,
-	                color="#2A4A71",
-	                style={'float':'left'}, 
-	                className='px-4'
-	            ),
+                daq.BooleanSwitch(
+                    id='',
+                    on=False,
+                    color="#2A4A71",
+                    style={'float': 'left'},
+                    className='px-4'
+                ),
 
-	            html.H5('Empresas contaminantes'),
+                html.H5('Empresas contaminantes'),
 
-	            daq.BooleanSwitch(
-	                id = '',
-	                on=False,
-	                color="#2A4A71",
-	                style={'float':'left'}, 
-	                className='px-4'
-	            ),
+                daq.BooleanSwitch(
+                    id='',
+                    on=False,
+                    color="#2A4A71",
+                    style={'float': 'left'},
+                    className='px-4'
+                ),
 
-	            html.H5('Escuelas'),
+                html.H5('Escuelas'),
 
-				daq.BooleanSwitch(
-	                id = '',
-	                on=False,
-	                color="#2A4A71",
-	                style={'float':'left'}, 
-	                className='px-4'
-	            ),
+                daq.BooleanSwitch(
+                    id='',
+                    on=False,
+                    color="#2A4A71",
+                    style={'float': 'left'},
+                    className='px-4'
+                ),
 
-	            html.H5('Automóviles'),
+                html.H5('Automóviles'),
 
-				daq.BooleanSwitch(
-	                id = '',
-	                on=False,
-	                color="#2A4A71",
-	                style={'float':'left'}, 
-	                className='px-4'
-	            ),
+                daq.BooleanSwitch(
+                    id='',
+                    on=False,
+                    color="#2A4A71",
+                    style={'float': 'left'},
+                    className='px-4'
+                ),
 
-	            html.H5('Población'),
+                html.H5('Población'),
 
-			])
+            ])
 
-    	])
+        ])
 
-    	],
+    ],
         id="offcanvas",
         title="Filtros",
         is_open=False,
         placement='end'
     ),
 
-	# TITULO
-	dbc.Row([
+    # TITULO
+    dbc.Row([
 
-		dbc.Col([
-		
-			html.H1('GeoSTATS', style={'text-align':'center','color':'black'}),
+        dbc.Col([
 
-			# dbc.Button([
-			# 		html.Img(src='data:image/png;base64,{}'.format(encoded_img1), 
-			# 		className="p-0 img-fluid", style={'margin':'0'})
-			# 			],
-			# 	id="open", 
-			# 	n_clicks=0,
-			# 	style={'background-color':'transparent','border':'none','color':'black','width':'30px','padding':'0 0 0 0'}),
+            html.H1('GeoSTATS', style={'text-align': 'center', 'color': 'black'}),
 
-	        dbc.Modal(
-	            [
-	                dbc.ModalBody([
+            # dbc.Button([
+            # 		html.Img(src='data:image/png;base64,{}'.format(encoded_img1),
+            # 		className="p-0 img-fluid", style={'margin':'0'})
+            # 			],
+            # 	id="open",
+            # 	n_clicks=0,
+            # 	style={'background-color':'transparent','border':'none','color':'black','width':'30px','padding':'0 0 0 0'}),
 
-	                	dbc.Button([
-							html.Img(src='data:image/png;base64,{}'.format(encoded_img3), 
-							className="p-0 img-fluid")
-								],
-						id="close", 
-						n_clicks=0,
-						style={'background-color':'transparent','border':'none','color':'black','width':'30px','padding':'0'}),
+            dbc.Modal(
+                [
+                    dbc.ModalBody([
 
-	                	html.Br(),
+                        dbc.Button([
+                            html.Img(src='data:image/png;base64,{}'.format(encoded_img3),
+                                     className="p-0 img-fluid")
+                        ],
+                            id="close",
+                            n_clicks=0,
+                            style={'background-color': 'transparent', 'border': 'none', 'color': 'black',
+                                   'width': '30px', 'padding': '0'}),
 
-						"Resumen de geostats, ficha técnica, colaboradores, etc",
+                        html.Br(),
 
-	                ]),
-	            ],
-	            id="modal",
-	            is_open=False,
-	        ),
-		
-		], className='d-flex justify-content-center', style={'float':'left'})
+                        "Resumen de geostats, ficha técnica, colaboradores, etc",
 
-	], className='m-0', style={'height':'10vh', 'position':'absolute','z-index':'1','left':'40%'}),
+                    ]),
+                ],
+                id="modal",
+                is_open=False,
+            ),
 
-	# MAPA Y FILTROS
-	dbc.Row([
+        ], className='d-flex justify-content-center', style={'float': 'left'})
 
-		# MAPA
-		dbc.Col([
+    ], className='m-0', style={'height': '10vh', 'position': 'absolute', 'z-index': '1', 'left': '40%'}),
 
-				html.Div([
+    # MAPA Y FILTROS
+    dbc.Row([
 
-					dcc.Loading([
+        # MAPA
+        dbc.Col([
 
-						dcc.Graph(
-			                id = 'mapa',
-			                figure = mapa,
-			                config={
-			                        'modeBarButtonsToRemove':
-			                        ['lasso2d', 'pan2d','zoom2d',
-			                        'zoomIn2d', 'zoomOut2d', 'autoScale2d',
-			                        'resetScale2d', 'hoverClosestCartesian',
-			                        'hoverCompareCartesian', 'toggleSpikelines',
-			                        'select2d',],
-			                        'displaylogo': False
-			                    },
-			                style={'height':'100vh'}
-						)
+            html.Div([
 
-					],
-		            color="#2cdb63", type="cube"
-		            ),
+                dcc.Loading([
 
-				]),
+                    dcc.Graph(
+                        id='mapa',
+                        figure=mapa,
+                        config={
+                            'modeBarButtonsToRemove':
+                                ['lasso2d', 'pan2d', 'zoom2d',
+                                 'zoomIn2d', 'zoomOut2d', 'autoScale2d',
+                                 'resetScale2d', 'hoverClosestCartesian',
+                                 'hoverCompareCartesian', 'toggleSpikelines',
+                                 'select2d', ],
+                            'displaylogo': False
+                        },
+                        style={'height': '100vh'}
+                    )
 
-		], style={'padding':'0'}),
+                ],
+                    color="#2cdb63", type="cube"
+                ),
 
-	], className='m-0', style={'height':'100vh','z-index':'2'})
+            ]),
 
-], className='m-0', style={'height':'100vh'})
+        ], style={'padding': '0'}),
+
+    ], className='m-0', style={'height': '100vh', 'z-index': '2'})
+
+], className='m-0', style={'height': '100vh'})
 
 # @app.callback(
 #     Output("offcanvas", "is_open"),
